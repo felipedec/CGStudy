@@ -9,15 +9,6 @@
 // Saiba mais:
 // https://github.com/felipedec/CGStudy
 
-#include "Core.h"	
-#include "Vector2.h"
-#include "Vector3.h"
-#include "Vector4.h"
-#include "Matrix2x2.h"
-#include "Matrix3x3.h"
 #include "Matrix4x4.h"
 
-int main()
-{
-	return 0;
-}
+FMatrix4x4 FMatrix4x4::Identy(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
