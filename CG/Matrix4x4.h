@@ -52,7 +52,6 @@ public:
 public:
 
 	/**
-	 *
 	 * Obtem o resultado da multiplicação dessa matríz com outra.
 	 *
 	 * @param Other Outra matríz da operação.
@@ -61,7 +60,6 @@ public:
 	FORCEINLINE FMatrix4x4 operator*(const FMatrix4x4& Other) const;
 
 	/**
-	 *
 	 * Obtem o resultado da multiplicação dessa matríz com uma escalar.
 	 *
 	 * @param Scale Escalar.
@@ -70,7 +68,6 @@ public:
 	FORCEINLINE FMatrix4x4 operator*(const float Scale) const;
 
 	/**
-	 *
 	 * Obtem o resultado da divisão dessa matríz com uma escalar.
 	 *
 	 * @param Scale Escalar.
@@ -79,7 +76,6 @@ public:
 	FORCEINLINE FMatrix4x4 operator/(const float Scale) const;
 
 	/**
-	 *
 	 * Obtem uma matríz sendo cada componente a soma dos respectivos componentes desta matríz e a outra.
 	 *
 	 * @param Other Outra matríz.
@@ -88,7 +84,6 @@ public:
 	FORCEINLINE FMatrix4x4 operator+(const FMatrix4x4& Other) const;
 
 	/**
-	 *
 	 * Obtem uma matríz sendo cada componente a subtração dos respectivos componentes desta matríz e a outra.
 	 *
 	 * @param Other Outra matríz.
@@ -97,7 +92,6 @@ public:
 	FORCEINLINE FMatrix4x4 operator-(const FMatrix4x4& Other) const;
 
 	/**
-	 *
 	 * Obtem o resultado do produto da matríz com um vetor de 4 componentes.
 	 *
 	 * @param V Vetor.

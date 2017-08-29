@@ -43,156 +43,141 @@ public:
 	FORCEINLINE FVector4() = default;
 
 	/**
-	*
-	* Construtor utilizando valores iniciais para cada componente.
-	*
-	* @param InX Valor do componente X.
-	* @param InY Valor do componente Y.
-	* @param InZ Valor do componente Z.
-	* @param InZ Valor do componente W.
-	*/
+	 * Construtor utilizando valores iniciais para cada componente.
+	 *
+	 * @param InX Valor do componente X.
+	 * @param InY Valor do componente Y.
+	 * @param InZ Valor do componente Z.
+	 * @param InZ Valor do componente W.
+	 */
 	FORCEINLINE FVector4(const float InX, const float InY, const float InZ, const float InW);
 
 public:
 
 	/**
-	*
-	* Obtém o resultado da adição dos dois vértices.
-	*
-	* @param V o outro vértice da adição.
-	* @return O resultado da adição dos dois vértices.
-	*/
+	 * Obtém o resultado da adição dos dois vértices.
+	 *
+	 * @param V o outro vértice da adição.
+	 * @return O resultado da adição dos dois vértices.
+	 */
 	FORCEINLINE FVector4 operator+(const FVector4& V) const;
 
 	/**
-	*
-	* Obtém o resultado da subitração dos dois vetores.
-	*
-	* @param V O outro vetor da adição.
-	* @return O resultado da subitração dos dois vértices.
-	*/
+	 * Obtém o resultado da subitração dos dois vetores.
+	 *
+	 * @param V O outro vetor da adição.
+	 * @return O resultado da subitração dos dois vértices.
+	 */
 	FORCEINLINE FVector4 operator-(const FVector4& V) const;
 
 	/**
-	*
-	* Obtém o resultado da escala do vetor. (multiplicando todos os componentes por um valor).
-	*
-	* @param Scale Quanto devem ser multiplicado cada componente do vetor.
-	* @return O resultado do vetor escalonado.
-	*/
+	 * Obtém o resultado da escala do vetor. (multiplicando todos os componentes por um valor).
+	 *
+	 * @param Scale Quanto devem ser multiplicado cada componente do vetor.
+	 * @return O resultado do vetor escalonado.
+	 */
 	FORCEINLINE FVector4 operator*(const float Scale) const;
 
 	/**
-	*
-	* Obtém o resultado da divisão de todos os componente do vetor por um valor.
-	*
-	* @param Scale Quanto devem ser dividido cada componente do vetor.
-	* @return O resultado do vetor escalonado.
-	*/
+	 * Obtém o resultado da divisão de todos os componente do vetor por um valor.
+	 *
+	 * @param Scale Quanto devem ser dividido cada componente do vetor.
+	 * @return O resultado do vetor escalonado.
+	 */
 	FORCEINLINE FVector4 operator/(const float Scale) const;
 
 	/**
-	*
-	* Obtém o resultado do produto escalar entre dois vetores.
-	*
-	* @param V O outro vetor do produto escalar.
-	* @return O resutlado do produto escalar.
-	*/
+	 * Obtém o resultado do produto escalar entre dois vetores.
+	 *
+	 * @param V O outro vetor do produto escalar.
+	 * @return O resutlado do produto escalar.
+	 */
 	FORCEINLINE float operator|(const FVector4& V) const;
 
 public:
 
 	/**
-	*
-	* Obtém o resultado da comparação de cada componente do vetor com outro.
-	*
-	* @param V O outro vetor.
-	* @return Retorna verdadeiro caso todos componentes sejam iguais.
-	*/
+	 * Obtém o resultado da comparação de cada componente do vetor com outro.
+	 *
+	 * @param V O outro vetor.
+	 * @return Retorna verdadeiro caso todos componentes sejam iguais.
+	 */
 	FORCEINLINE bool operator==(const FVector4& V) const;
 
 	/**
-	*
-	* Obtém o resultado da comparação de cada componente do vetor com outro.
-	*
-	* @param V O outro vetor.
-	* @return Retorna faslo caso algum componente não seja igual.
-	*/
+	 * Obtém o resultado da comparação de cada componente do vetor com outro.
+	 *
+	 * @param V O outro vetor.
+	 * @return Retorna faslo caso algum componente não seja igual.
+	 */
 	FORCEINLINE bool operator!=(const FVector4& V) const;
 
 	/**
-	*
-	* Obtém uma copia do vetor negativo.
-	*
-	* @return Copia do vetor negativo.
-	*/
+	 * Obtém uma copia do vetor negativo.
+	 *
+	 * @return Copia do vetor negativo.
+	 */
 	FORCEINLINE FVector4 operator-() const;
 
 	/**
-	*
-	* Adiciona o valor de cada componente do vetor passado
-	* com os respectivos componentes deste vetor.
-	*
-	* @param V Vetor a ser adcionado.
-	* @return Retorna a copia desse vetor após a operação.
-	*/
+	 * Adiciona o valor de cada componente do vetor passado
+	 * com os respectivos componentes deste vetor.
+	 *
+	 * @param V Vetor a ser adcionado.
+	 * @return Retorna a copia desse vetor após a operação.
+	 */
 	FORCEINLINE FVector4 operator+=(const FVector4& V);
 
 	/**
-	*
-	* Subtrair o valor de cada componente do vetor passado
-	* com os respectivos componentes deste vetor.
-	*
-	* @param V Vetor a ser subtraído.
-	* @return Retorna a copia desse vetor após a operação.
-	*/
+	 * Subtrair o valor de cada componente do vetor passado
+	 * com os respectivos componentes deste vetor.
+	 *
+	 * @param V Vetor a ser subtraído.
+	 * @return Retorna a copia desse vetor após a operação.
+	 */
 	FORCEINLINE FVector4 operator-=(const FVector4& V);
 
 	/**
-	*
-	* Multiplica cada componente do vetor por um valor.
-	*
-	* @param Scale O quanto multiplicar os componentes.
-	* @return Retorna a copia desse vetor após a operação.
-	*/
+	 * Multiplica cada componente do vetor por um valor.
+	 *
+	 * @param Scale O quanto multiplicar os componentes.
+	 * @return Retorna a copia desse vetor após a operação.
+	 */
 	FORCEINLINE FVector4 operator*=(float Scale);
 
 	/**
-	*
-	* Divide cada componente do vetor por um valor.
-	*
-	* @param Scale O quanto dividir os componentes.
-	* @return Retorna a copia desse vetor após a operação.
-	*/
+	 * Divide cada componente do vetor por um valor.
+	 *
+	 * @param Scale O quanto dividir os componentes.
+	 * @return Retorna a copia desse vetor após a operação.
+	 */
 	FORCEINLINE FVector4 operator/=(float Scale);
 
 	/**
-	*
-	* Obtém a referência de um componente pelo seu índice.
-	*
-	* @param Index Indíce do componente.
-	* @return Referência do componente.
-	*/
+	 * Obtém a referência de um componente pelo seu índice.
+	 *
+	 * @param Index Indíce do componente.
+	 * @return Referência do componente.
+	 */
 	FORCEINLINE float& operator[](int32_t Index);
 
 	/**
-	*
-	* Obtém o valor de um componente pelo seu índice.
-	*
-	* @param Index Indíce do componente.
-	* @return Valor do componente.
-	*/
+	 * Obtém o valor de um componente pelo seu índice.
+	 *
+	 * @param Index Indíce do componente.
+	 * @return Valor do componente.
+	 */
 	FORCEINLINE float operator[](int32_t Index) const;
 
 public:
 
 	/**
-	* Obtém o resultado da comparação de cada componente do vetor com outro, com tolerância.
-	*
-	* @param V				Vetor a ser comparado.
-	* @param Tolerance	Tolerância.
-	* @retrun Retorna verdadeiro caso os vetores estejam perto suficiente.
-	*/
+	 * Obtém o resultado da comparação de cada componente do vetor com outro, com tolerância.
+	 *
+	 * @param V				Vetor a ser comparado.
+	 * @param Tolerance	Tolerância.
+	 * @retrun Retorna verdadeiro caso os vetores estejam perto suficiente.
+	 */
 	FORCEINLINE bool Equals(const FVector4& V, const float Tolerance) const;
 
 	/** Retorna a magnitude do vetor ao quadrado */

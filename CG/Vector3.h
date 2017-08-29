@@ -58,7 +58,6 @@ public:
 	FORCEINLINE FVector3() = default;
 
 	/**
-	 *
 	 * Construtor utilizando valores iniciais para cada componente.
 	 *
 	 * @param InX Valor do componente X.
@@ -70,7 +69,6 @@ public:
 public:
 
 	/**
-	 *
 	 * Obtém o resultado da adição dos dois vértices.
 	 *
 	 * @param V o outro vértice da adição.
@@ -79,7 +77,6 @@ public:
 	FORCEINLINE FVector3 operator+(const FVector3& V) const;
 
 	/**
-	 *
 	 * Obtém o resultado da subitração dos dois vetores.
 	 *
 	 * @param V O outro vetor da adição.
@@ -88,7 +85,6 @@ public:
 	FORCEINLINE FVector3 operator-(const FVector3& V) const;
 
 	/**
-	 *
 	 * Obtém o resultado da escala do vetor. (multiplicando todos os componentes por um valor).
 	 *
 	 * @param Scale Quanto devem ser multiplicado cada componente do vetor.
@@ -97,7 +93,6 @@ public:
 	FORCEINLINE FVector3 operator*(const float Scale) const;
 
 	/**
-	 *
 	 * Obtém o resultado da divisão de todos os componente do vetor por um valor.
 	 *
 	 * @param Scale Quanto devem ser dividido cada componente do vetor.
@@ -106,7 +101,6 @@ public:
 	FORCEINLINE FVector3 operator/(const float Scale) const;
 
 	/**
-	 *
 	 * Obtém o resultado do produto escalar entre dois vetores.
 	 *
 	 * @param V O outro vetor do produto escalar.
@@ -115,18 +109,16 @@ public:
 	FORCEINLINE float operator|(const FVector3& V) const;
 
 	/**
-	*
-	* Obtém o resultado do produto vetorial entre dois vetores.
-	*
-	* @param V O outro vetor do produto vetorial.
-	* @return O resutlado do produto vetorial.
-	*/
+	 * Obtém o resultado do produto vetorial entre dois vetores.
+	 *
+	 * @param V O outro vetor do produto vetorial.
+	 * @return O resutlado do produto vetorial.
+	 */
 	FORCEINLINE FVector3 operator^(const FVector3& V) const;
 
 public:
 
 	/**
-	 *
 	 * Obtém o resultado da comparação de cada componente do vetor com outro.
 	 *
 	 * @param V O outro vetor.
@@ -135,7 +127,6 @@ public:
 	FORCEINLINE bool operator==(const FVector3& V) const;
 
 	/**
-	 *
 	 * Obtém o resultado da comparação de cada componente do vetor com outro.
 	 *
 	 * @param V O outro vetor.
@@ -144,15 +135,13 @@ public:
 	FORCEINLINE bool operator!=(const FVector3& V) const;
 
 	/**
-	 *
 	 * Obtém uma copia do vetor negativo.
 	 *
 	 * @return Copia do vetor negativo.
 	 */
 	FORCEINLINE FVector3 operator-() const;
 
-	 /**
-	 *
+	/**
 	 * Adiciona o valor de cada componente do vetor passado
 	 * com os respectivos componentes deste vetor.
 	 *
@@ -162,7 +151,6 @@ public:
 	FORCEINLINE FVector3 operator+=(const FVector3& V);
 
 	/**
-	 *
 	 * Subtrair o valor de cada componente do vetor passado
 	 * com os respectivos componentes deste vetor.
 	 *
@@ -172,7 +160,6 @@ public:
 	FORCEINLINE FVector3 operator-=(const FVector3& V);
 
 	/**
-	 *
 	 * Multiplica cada componente do vetor por um valor.
 	 *
 	 * @param Scale O quanto multiplicar os componentes.
@@ -181,7 +168,6 @@ public:
 	FORCEINLINE FVector3 operator*=(float Scale);
 
 	/**
-	 *
 	 * Divide cada componente do vetor por um valor.
 	 *
 	 * @param Scale O quanto dividir os componentes.
@@ -190,7 +176,6 @@ public:
 	FORCEINLINE FVector3 operator/=(float Scale);
 
 	/**
-	 *
 	 * Obtém a referência de um componente pelo seu índice.
 	 *
 	 * @param Index Indíce do componente.
@@ -199,7 +184,6 @@ public:
 	FORCEINLINE float& operator[](int32_t Index);
 
 	/**
-	 *
 	 * Obtém o valor de um componente pelo seu índice.
 	 *
 	 * @param Index Indíce do componente.
@@ -236,7 +220,6 @@ public:
 public:
 
 	/**
-	 *
 	 * Obtém a distância quadrada entre doís vetores.
 	 *
 	 * @param V1 Primeiro vetor.
@@ -246,7 +229,6 @@ public:
 	FORCEINLINE static float DistSquared(const FVector3& V1, const FVector3& V2);
 
 	/**
-	 *
 	 * Obtém a distância entre doís vetores.
 	 *
 	 * @param V1 Primeiro vetor.

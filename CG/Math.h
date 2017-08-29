@@ -18,13 +18,12 @@ class FMath
 public:
 
 	/**
-	*
-	* Obtem a raíz quadrada do valor com alta precisão e baixa performance.
-	*
-	* @param Value Valor ao qual deve ser realizado a operação.
-	* @return Retorna a raíz quadrada do valor.
-	* @ref http://ilab.usc.edu/wiki/index.php/Fast_Square_Root
-	*/
+	 * Obtem a raíz quadrada do valor com alta precisão e baixa performance.
+	 *
+	 * @param Value Valor ao qual deve ser realizado a operação.
+	 * @return Retorna a raíz quadrada do valor.
+	 * @ref http://ilab.usc.edu/wiki/index.php/Fast_Square_Root
+	 */
 	FORCEINLINE static float Sqrt(const float Value)
 	{
 		union
@@ -50,16 +49,16 @@ public:
 
 	/** Retorna o maior de dois valores */
 	template<class T>
-	FORCEINLINE static T Max(const T A, const T B)
+	FORCEINLINE static T Max(const T Lhs, const T Rhs)
 	{
-		return A > B ? A : B;
+		return Lhs > Rhs ? Lhs : Rhs;
 	}
 
 	/** Retona o menor de dois valores */
 	template<class T>
-	FORCEINLINE static T Min(const T A, const T B)
+	FORCEINLINE static T Min(const T Lhs, const T Rhs)
 	{
-		return A < B ? A : B;
+		return Lhs < Rhs ? Lhs : Rhs;
 	}
 
 	/** Retorna o valor multiplicado por ele mesmo */

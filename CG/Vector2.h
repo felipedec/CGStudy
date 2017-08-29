@@ -235,6 +235,12 @@ public:
 	 * @return Distância dos doís vetores.
 	 */
 	FORCEINLINE static float Distance(const FVector2& V1, const FVector2& V2);
+
+
+	FORCEINLINE static FVector2 Lerp(const FVector2& Lhs, const FVector2& Rhs, const float T)
+	{
+		return Lhs * (1 - T) + Rhs * T;
+	}
 };
 
 /* ---------------- Inline functions ---------------- */

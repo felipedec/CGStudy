@@ -11,9 +11,4 @@
 
 #pragma once
 
-#include <iostream>
-
-#include "Macros.h"
-#include "Math.h"
-#include "TypeTraits.h"
-#include "CurveUtility.h"
+#define FORCEINLINE __forceinline
