@@ -11,13 +11,22 @@
 			https://github.com/felipedec/CGStudy
 ----------------------------------------------------------------------------*/
 
-#include "Vector.h"
+#pragma once
 
-const FVector FVector::Zero(0, 0, 0);
-const FVector FVector::One(1, 1, 1);
-const FVector FVector::Right(1, 0, 0);
-const FVector FVector::Left(-1, 0, 0);
-const FVector FVector::Up(0, 1, 0);
-const FVector FVector::Down(0, -1, 0);
-const FVector FVector::Forward(0, 0, 1);
-const FVector FVector::Back(0, 0, -1);
+/*----------------------------------------------------------------------------
+			Math.
+----------------------------------------------------------------------------*/
+
+#include "Vector2.h"
+#include "Vector.h"
+#include "Vector4.h"
+#include "Plane.h"
+#include "Matrix.h"
+#include "TranslationMatrix.h"
+
+/*----------------------------------------------------------------------------
+			Misc.
+----------------------------------------------------------------------------*/
+
+#include "Sort.h"
+#include "GenericPlataform.h"

@@ -87,9 +87,10 @@
       <PrecompiledHeader>
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
+      <Optimization>MaxSpeed</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <CallingConvention>Cdecl</CallingConvention>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -144,25 +145,30 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CoreFwd.h" />
+    <ClInclude Include="CoreTypes.h" />
     <ClInclude Include="CurveUtility.h" />
+    <ClInclude Include="DirectXMath.h" />
+    <ClInclude Include="FClipProjectionMatrix.h" />
+    <ClInclude Include="GenericPlataform.h" />
+    <ClInclude Include="Log.h" />
     <ClInclude Include="Macros.h" />
     <ClInclude Include="Math.h" />
     <ClInclude Include="Core.h" />
-    <ClInclude Include="Matrix2x2.h" />
-    <ClInclude Include="Matrix3x3.h" />
-    <ClInclude Include="Matrix4x4.h" />
+    <ClInclude Include="Matrix.h" />
+    <ClInclude Include="Plane.h" />
+    <ClInclude Include="Quaternion.h" />
+    <ClInclude Include="Sort.h" />
+    <ClInclude Include="TranslationMatrix.h" />
     <ClInclude Include="TypeTraits.h" />
-    <ClInclude Include="Vector3.h" />
+    <ClInclude Include="Vector.h" />
     <ClInclude Include="Vector2.h" />
     <ClInclude Include="Vector4.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CG.cpp" />
-    <ClCompile Include="Math.cpp" />
-    <ClCompile Include="Core.cpp" />
-    <ClCompile Include="Matrix2x2.cpp" />
-    <ClCompile Include="Matrix3x3.cpp" />
-    <ClCompile Include="Matrix4x4.cpp" />
+    <ClCompile Include="Matrix.cpp" />
+    <ClCompile Include="Quaternion.cpp" />
     <ClCompile Include="Vector3.cpp" />
     <ClCompile Include="Vector2.cpp" />
     <ClCompile Include="Vector4.cpp" />

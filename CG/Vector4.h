@@ -1,33 +1,48 @@
-// Este código pertence a um projeto pessoal,
-// baseado no código aberto da Unreal Engine,
-// com o intuito de aprendizado. Apenas as 
-// estrutura básica das classes são semelhantes
-// e as vezes iguais, já os corpos de métodos
-// são implementações próprias do desenvolvedor
-// deste projeto.
-//
-// Saiba mais:
-// https://github.com/felipedec/CGStudy
+/*----------------------------------------------------------------------------
+			Este código pertence a um projeto pessoal,
+			baseado no código aberto da Unreal Engine,
+			com o intuito de aprendizado. Apenas as
+			estrutura básica das classes são semelhantes
+			e as vezes iguais, já os corpos de métodos
+			são implementações próprias do desenvolvedor
+			deste projeto.
+			
+			Saiba mais:
+			https://github.com/felipedec/CGStudy
+----------------------------------------------------------------------------*/
 
 #pragma once
 
 #include "Core.h"
+#include "CoreFwd.h"
+#include "Vector2.h"
 
-struct FVector4
+MS_ALIGN(16) struct FVector4
 {
 public:
 
-	/** Componente X do vetor. */
-	float X;
+	union
+	{
+		struct
+		{
+			/** Componente X do vetor. */
+			float X;
 
-	/** Componente Y do vetor. */
-	float Y;
+			/** Componente Y do vetor. */
+			float Y;
 
-	/** Componente Z do vetor. */
-	float Z;
+			/** Componente Z do vetor. */
+			float Z;
 
-	/** Componente W do vetor. */
-	float W;
+			/** Componente W do vetor. */
+			float W;
+		};
+
+		struct
+		{
+			float Components[4];
+		};
+	};
 
 public:
 
@@ -171,6 +186,14 @@ public:
 
 public:
 
+	/** Obtém uma copia desse vetor convertida para um vetor de três componentes */
+	FORCEINLINE operator FVector() const;
+
+	/** Obtém uma copia desse vetor convertida para um vetor de dois componentes */
+	FORCEINLINE operator FVector2() const;
+
+public:
+
 	/**
 	 * Obtém o resultado da comparação de cada componente do vetor com outro, com tolerância.
 	 *
@@ -192,21 +215,18 @@ public:
 	/** Normaliza o vetor e retorna uma copia dele */
 	FORCEINLINE FVector4 Normalize();
 
-	/** Copiar os componente em um vetor */
-	FORCEINLINE void CopyTo(float Buffer[]) const;
-
-public:
-
-};
+} GCC_ALIGN(16);
 
 /* ---------------- Inline functions ---------------- */
 
-FORCEINLINE FVector4::FVector4(const float InX, const float InY, const float InZ, const float InW)
+#include "Vector.h"
+
+FORCEINLINE FVector4::FVector4(const float InX, const float InY, const float InZ, const float InW) :
+	X(InX),
+	Y(InY),
+	Z(InZ),
+	W(InW)
 {
-	X = InX;
-	Y = InY;
-	Z = InZ;
-	W = InW;
 }
 
 FORCEINLINE bool FVector4::Equals(const FVector4 & V, const float Tolerance) const
@@ -278,12 +298,22 @@ FORCEINLINE FVector4 FVector4::operator/=(float Scale)
 
 FORCEINLINE float& FVector4::operator[](int32_t Index)
 {
-	return (&X)[Index];
+	return Components[Index];
 }
 
 FORCEINLINE float FVector4::operator[](int32_t Index) const
 {
-	return (&X)[Index];
+	return Components[Index];
+}
+
+FORCEINLINE FVector4::operator FVector() const
+{
+	return FVector(X, Y, Z);
+}
+
+FORCEINLINE FVector4::operator FVector2() const
+{
+	return FVector2(X, Y);
 }
 
 FORCEINLINE float FVector4::MagnitudeSquared() const
@@ -304,15 +334,4 @@ FORCEINLINE FVector4 FVector4::GetNormalized() const
 FORCEINLINE FVector4 FVector4::Normalize()
 {
 	return *this = GetNormalized();
-}
-
-FORCEINLINE void FVector4::CopyTo(float Buffer[]) const
-{
-	if (Buffer)
-	{
-		Buffer[0] = X;
-		Buffer[1] = Y;
-		Buffer[2] = Z;
-		Buffer[3] = W;
-	}
 }

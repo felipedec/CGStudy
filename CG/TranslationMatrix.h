@@ -11,13 +11,29 @@
 			https://github.com/felipedec/CGStudy
 ----------------------------------------------------------------------------*/
 
-#include "Vector.h"
+#pragma once
 
-const FVector FVector::Zero(0, 0, 0);
-const FVector FVector::One(1, 1, 1);
-const FVector FVector::Right(1, 0, 0);
-const FVector FVector::Left(-1, 0, 0);
-const FVector FVector::Up(0, 1, 0);
-const FVector FVector::Down(0, -1, 0);
-const FVector FVector::Forward(0, 0, 1);
-const FVector FVector::Back(0, 0, -1);
+#include "CoreTypes.h"
+
+
+struct FTranslationMatrix : public FMatrix
+{
+public:
+	/** Constrói a matríz basedo em um vetor passado */
+	FORCEINLINE FTranslationMatrix(const FVector& Delta)
+	: FMatrix
+	(
+		FVector4(1.0f, 0.0f, 0.0f, 0.0f),
+		FVector4(0.0f, 1.0f, 0.0f, 0.0f),
+		FVector4(0.0f, 0.0f, 1.0f, 0.0f),
+		FVector4(Delta.X, Delta.Y, Delta.Z, 1.0f)
+	) { }
+
+public:
+
+	/** Fábrica de matrízes */
+	static CORE_API FMatrix Make(const FVector& Delta)
+	{
+		return FTranslationMatrix(Delta);
+	}
+};

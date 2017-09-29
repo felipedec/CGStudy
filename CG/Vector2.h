@@ -1,13 +1,15 @@
-// Este código pertence a um projeto pessoal,
-// baseado no código aberto da Unreal Engine,
-// com o intuito de aprendizado. Apenas as 
-// estrutura básica das classes são semelhantes
-// e as vezes iguais, já os corpos de métodos
-// são implementações próprias do desenvolvedor
-// deste projeto.
-//
-// Saiba mais:
-// https://github.com/felipedec/CGStudy
+/*----------------------------------------------------------------------------
+			Este código pertence a um projeto pessoal,
+			baseado no código aberto da Unreal Engine,
+			com o intuito de aprendizado. Apenas as
+			estrutura básica das classes são semelhantes
+			e as vezes iguais, já os corpos de métodos
+			são implementações próprias do desenvolvedor
+			deste projeto.
+			
+			Saiba mais:
+			https://github.com/felipedec/CGStudy
+----------------------------------------------------------------------------*/
 
 #pragma once
 
@@ -17,11 +19,22 @@ struct FVector2
 {
 public:
 
-	/** Componente X do vetor. */
-	float X;
+	union
+	{
+		struct
+		{
+			/** Componente X do vetor. */
+			float X;
 
-	/** Componente Y do vetor. */
-	float Y;
+			/** Componente Y do vetor. */
+			float Y;
+		};
+
+		struct
+		{
+			float Components[2];
+		};
+	};
 
 public:
 
@@ -211,9 +224,6 @@ public:
 	/** Normaliza o vetor e retorna uma copia dele */
 	FORCEINLINE FVector2 Normalize();
 
-	/** Copiar os componente em um vetor */
-	FORCEINLINE void CopyTo(float Buffer[]) const;
-
 public:
 
 	/**
@@ -245,10 +255,10 @@ public:
 
 /* ---------------- Inline functions ---------------- */
 
-FORCEINLINE FVector2::FVector2(const float InX, const float InY)
+FORCEINLINE FVector2::FVector2(const float InX, const float InY) :
+	X(InX),
+	Y(InY)
 {
-	X = InX;
-	Y = InY;
 }
 
 FORCEINLINE float FVector2::DistSquared(const FVector2 & V1, const FVector2 & V2)
@@ -328,12 +338,12 @@ FORCEINLINE FVector2 FVector2::operator/=(float Scale)
 
 FORCEINLINE float& FVector2::operator[](int32_t Index)
 {
-	return (&X)[Index];
+	return Components[Index];
 }
 
 FORCEINLINE float FVector2::operator[](int32_t Index) const
 {
-	return (&X)[Index];
+	return Components[Index];
 }
 
 FORCEINLINE float FVector2::MagnitudeSquared() const
@@ -354,13 +364,4 @@ FORCEINLINE FVector2 FVector2::GetNormalized() const
 FORCEINLINE FVector2 FVector2::Normalize()
 {
 	return *this = GetNormalized();
-}
-
-FORCEINLINE void FVector2::CopyTo(float Buffer[]) const
-{
-	if (Buffer)
-	{
-		Buffer[0] = X;
-		Buffer[1] = Y;
-	}
 }

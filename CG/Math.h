@@ -1,48 +1,107 @@
-// Este código pertence a um projeto pessoal,
-// baseado no código aberto da Unreal Engine,
-// com o intuito de aprendizado. Apenas as 
-// estrutura básica das classes são semelhantes
-// e as vezes iguais, já os corpos de métodos
-// são implementações próprias do desenvolvedor
-// deste projeto.
-//
-// Saiba mais:
-// https://github.com/felipedec/CGStudy
+/*----------------------------------------------------------------------------
+			Este código pertence a um projeto pessoal,
+			baseado no código aberto da Unreal Engine,
+			com o intuito de aprendizado. Apenas as
+			estrutura básica das classes são semelhantes
+			e as vezes iguais, já os corpos de métodos
+			são implementações próprias do desenvolvedor
+			deste projeto.
+			
+			Saiba mais:
+			https://github.com/felipedec/CGStudy
+----------------------------------------------------------------------------*/
 
 #pragma once
 
 #include "Core.h"
 
+#include <cmath> // sin, cos, tan
+
+
 class FMath
 {
+private:
+
+	union IntFloatUnion
+	{
+		int32 Int;
+		float Float;
+
+		FORCEINLINE IntFloatUnion(const int32 InInt)
+		{
+			Int = InInt;
+		}
+
+		FORCEINLINE IntFloatUnion(const float InFloat)
+		{
+			Float = InFloat;
+		}
+	};
+
+public:
+
+	CONSTEXPR static float Pi = 3.14159265358979f;
+
+	CONSTEXPR static float SmallNumber = 1.e-8f;
+
+	CONSTEXPR static float KindaSmallNumber = 1.e-4f;
+
+	CONSTEXPR static float EulersNumber = 2.71828182845904523536f;
+
+	CONSTEXPR static float InversedPi = 0.31830988618f;
+
+	CONSTEXPR static float HalfPi = 1.57079632679f;
+
+	CONSTEXPR static float Delta = 0.00001f;
+
+	CONSTEXPR static float BigNumber = 3.4e+38f;
+
+public:
+
+	CONSTEXPR static float Rad2Deg = (360 / (Pi * 2));
+
+	CONSTEXPR static float Deg2Rad = ((Pi * 2) / 360);
+
 public:
 
 	/**
-	 * Obtem a raíz quadrada do valor com alta precisão e baixa performance.
+	 * Obtem a raíz quadrada do valor.
 	 *
-	 * @param Value Valor ao qual deve ser realizado a operação.
+	 * @param Value Radicando.
 	 * @return Retorna a raíz quadrada do valor.
 	 * @ref http://ilab.usc.edu/wiki/index.php/Fast_Square_Root
 	 */
-	FORCEINLINE static float Sqrt(const float Value)
+	FORCEINLINE static float Sqrt(float Value)
 	{
-		union
-		{
-			int I;
-			float X;
-		} Union;
+		IntFloatUnion Union(Value);
 
-		Union.X = Value;
-		Union.I = (1 << 29) + (Union.I >> 1) - (1 << 22);
+		Union.Int = (1 << 29) + (Union.Int >> 1) - (1 << 22);
+		Union.Float = Union.Float + Value / Union.Float;
 
-		Union.X = Union.X + Value / Union.X;
-		Union.X = 0.25f * Union.X + Value / Union.X;
-
-		return Union.X;
+		return 0.25f * Union.Float + Value / Union.Float;
 	}
 
+	/**
+	 * Obtém a raiz quadrada invertida do valor.
+	 *
+	 * @param Radicando.
+	 *	@return Retorna a raiz quadrada invertida.
+	 * @ref http://www.files.sauliaus.info/InvSqrt.pdf
+	 */
+	FORCEINLINE static float InvSqrt(const float Value)
+	{
+		IntFloatUnion Union(Value);
+
+		Union.Int = 0x5F3759DF - (Union.Int >> 1);
+		
+		return Union.Float * (1.5f - (0.5f * Value * Union.Float * Union.Float));
+	}
+
+public:
+
 	/** Retorna o valor absoluto */
-	FORCEINLINE static float Abs(const float Value)
+	template<class T>
+	FORCEINLINE static T Abs(const T Value)
 	{
 		return Value < 0 ? -Value : Value; 
 	}
@@ -81,4 +140,25 @@ public:
 	{
 		return Value > 1 ? 1 : Value < 0 ? 0 : Value;
 	}
+
+public:
+
+	FORCEINLINE static float Sine(float Radians)
+	{
+		// TODO: Implementar minhas proprias funções trigonométricas
+		return sin(Radians);
+	}
+
+	FORCEINLINE static float Cossine(const float Randians)
+	{
+		// TODO: Implementar minhas proprias funções trigonométricas
+		return cos(Randians);
+	}
+
+	FORCEINLINE static float Tan(const float Randians)
+	{
+		// TODO: Implementar minhas proprias funções trigonométricas
+		return tan(Randians);
+	}
+
 };

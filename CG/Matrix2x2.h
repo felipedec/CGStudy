@@ -18,11 +18,22 @@ struct FMatrix2x2
 {
 public:
 
-	/** Componentes da primeira linha */
-	float M00, M01;
+	union
+	{
+		struct
+		{
+			/** Componentes da primeira linha */
+			float M00, M01;
 
-	/** Componentes da segunda linha */
-	float M10, M11;
+			/** Componentes da segunda linha */
+			float M10, M11;
+		};
+
+		struct
+		{
+			float Components[2][2];
+		};
+	};
 
 public:
 	
@@ -91,9 +102,6 @@ public:
 
 	/** Obtém uma cópia desta matríz transposta */
 	FORCEINLINE FMatrix2x2 GetTranspose() const;
-
-	/** Copiar os componente em um vetor */
-	FORCEINLINE void CopyTo(float** Buffer) const;
 };
 
 /* ---------------- Inline functions ---------------- */
@@ -145,14 +153,4 @@ FORCEINLINE FVector2 FMatrix2x2::operator*(const FVector2& V) const
 FORCEINLINE FMatrix2x2 FMatrix2x2::GetTranspose() const
 {
 	return FMatrix2x2(M00, M10, M01, M11);
-}
-
-FORCEINLINE void FMatrix2x2::CopyTo(float** Buffer) const
-{
-	if (Buffer == nullptr)
-	{
-		return;
-	}
-
-	std::memcpy(Buffer, &M00, 4 * sizeof(float));
 }

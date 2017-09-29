@@ -18,14 +18,25 @@ struct FMatrix3x3
 {
 public:
 
-	/** Componentes da primeira linha */
-	float M00, M01, M02;
+	union
+	{
+		struct
+		{
+			/** Componentes da primeira linha */
+			float M00, M01, M02;
 
-	/** Componentes da segunda linha */
-	float M10, M11, M12;
+			/** Componentes da segunda linha */
+			float M10, M11, M12;
 
-	/** Componentes da terceira linha */
-	float M20, M21, M22;
+			/** Componentes da terceira linha */
+			float M20, M21, M22;
+		};
+
+		struct
+		{
+			float Components[3][3];
+		};
+	};
 
 public:
 
@@ -99,9 +110,6 @@ public:
 
 	/** Obtém uma cópia desta matríz transposta */
 	FORCEINLINE FMatrix3x3 GetTranspose() const;
-
-	/** Copiar os componente em um vetor */
-	FORCEINLINE void CopyTo(float** Buffer) const;
 };
 
 /* ---------------- Inline functions ---------------- */
@@ -191,14 +199,4 @@ FORCEINLINE FVector3 FMatrix3x3::operator*(const FVector3& V) const
 FORCEINLINE FMatrix3x3 FMatrix3x3::GetTranspose() const
 {
 	return FMatrix3x3(M00, M10, M20, M01, M11, M21, M02, M12, M22);
-}
-
-FORCEINLINE void FMatrix3x3::CopyTo(float** Buffer) const
-{
-	if (Buffer == nullptr)
-	{
-		return;
-	}
-
-	std::memcpy(Buffer, &M00, 9 * sizeof(float));
 }
