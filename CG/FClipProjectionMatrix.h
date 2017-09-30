@@ -8,7 +8,7 @@
 			deste projeto.
 			
 			Saiba mais:
-			https://github.com/felipedec/CGStudy
+			https://github.com/felipedec/LeafEngine
 ----------------------------------------------------------------------------*/
 
 #pragma once
@@ -29,13 +29,13 @@ public:
 	FClipProjectionMatrix(const FMatrix& SrcProjMat, const FPlane& Plane) :
 		FMatrix(SrcProjMat)
 	{
-		FPlane CornerPlane(
-			Sign(Plane.X) / SrcProjMat.M[0][0],
-			Sign(Plane.Y) / SrcProjMat.M[1][1],
+		FPlane CornerPlane
+		(
+			Sign(Plane.X) / SrcProjMat.M00,
+			Sign(Plane.Y) / SrcProjMat.M11,
 			1.0f,
-			-(1.0f - SrcProjMat.M[2][2]) / SrcProjMat.M[3][2]
+			-(1.0f - SrcProjMat.M22) / SrcProjMat.M32
 		);
-
 		FPlane ProjPlane(Plane * (1.0f / (Plane | CornerPlane)));
 
 		M[0][2] = ProjPlane.X;

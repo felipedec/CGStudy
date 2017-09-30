@@ -8,7 +8,7 @@
 			deste projeto.
 			
 			Saiba mais:
-			https://github.com/felipedec/CGStudy
+			https://github.com/felipedec/LeafEngine
 ----------------------------------------------------------------------------*/
 
 #pragma once
@@ -283,18 +283,12 @@ public: \
 WARNING(pop) \
 
 /*----------------------------------------------------------------------------
-			THasStaticClass.
+			THasStaticClass, TGetEditorClass.
 ----------------------------------------------------------------------------*/
 
 struct LClass;
 Declare_HasSignature(THasStaticClass, T::StaticClass, LClass(*)())
-
-/*----------------------------------------------------------------------------
-			THasCustomEditor.
-----------------------------------------------------------------------------*/
-
-struct LEditor;
-Declare_HasSignature(THasCustomEditor, T::CustomEditor, LEditor(*)())
+Declare_HasSignature(TGetEditorClass, T::CustomEditor, LClass(*)())
 
 /*----------------------------------------------------------------------------
 			TIsArray.
@@ -405,8 +399,8 @@ struct TIsStruct
 {
 private:
 
-	template<typename U> static uint32 Test(int U::*);
-	template<typename U> static uint8 Test(...);
+	template<typename U> static uint32 Test(int32 U::*);
+	template<typename U> static uint8 Test(...		);
 
 public:
 

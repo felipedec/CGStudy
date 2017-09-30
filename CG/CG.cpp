@@ -7,7 +7,7 @@
 // deste projeto.
 //
 // Saiba mais:
-// https://github.com/felipedec/CGStudy
+// https://github.com/felipedec/LeafEngine
 
 #include "CoreTypes.h"
 
@@ -66,6 +66,7 @@ static int8 Buffer[SCREEN_RESOLUTION << 1];
 
 int main()
 {
+	std::cout << TIsStruct<FMatrix>::Value << std::endl;
 	std::cout << 180 * FMath::Deg2Rad << std::endl;
 
 	std::cout << FMath::Sine(FMath::Deg2Rad * 360) << std::endl;
@@ -75,7 +76,6 @@ int main()
 	std::cout << FMath::Sine(FMath::Deg2Rad * 45) << std::endl;
 	std::cout << FMath::Sine(FMath::Deg2Rad * 30) << std::endl;
 	std::cout << FMath::Sine(FMath::Deg2Rad * 0) << std::endl;
-
 
  	int64 c = 0;
 	int64 Clock = clock();

@@ -8,7 +8,7 @@
 			deste projeto.
 			
 			Saiba mais:
-			https://github.com/felipedec/CGStudy
+			https://github.com/felipedec/LeafEngine
 ----------------------------------------------------------------------------*/
 
 #include "Quaternion.h"
