@@ -400,7 +400,7 @@ struct TIsStruct
 private:
 
 	template<typename U> static uint32 Test(int32 U::*);
-	template<typename U> static uint8 Test(...		);
+	template<typename U> static uint8 Test(...);
 
 public:
 
@@ -635,11 +635,11 @@ template<typename T, typename... TRest> struct TMaxSizeof<T, TRest...>
 	: TIntegralConst<uint32, TMaxSizeof<TRest...>::Value ? sizeof(T) : TMaxSizeof<TRest...>::Value> { };
 
 /*----------------------------------------------------------------------------
-			TNameOf.
+			TFriendlyNameOf.
 ----------------------------------------------------------------------------*/
 
 template<typename T>
-struct TNameOf
+struct TFriendlyNameOf
 {
 	FORCEINLINE static const TCHAR* GetName()
 	{
@@ -647,26 +647,31 @@ struct TNameOf
 	}
 };
 
-#define Expose_TNameOf(Type) \
+#define Expose_TFriendlyNameOf(Type, FriendlyName) \
 template<> \
-struct TNameOf<Type> \
+struct TFriendlyNameOf<Type> \
 { \
-	FORCEINLINE static const TCHAR* GetName() \
+	FORCEINLINE static const TCHAR (&GetName())[sizeof(FriendlyName)] \
 	{ \
-		return TEXT(#Type); \
+		static const TCHAR Specifier[sizeof(FriendlyName)] = TEXT(FriendlyName); \
+		return Specifier; \
 	} \
 }; \
 
-Expose_TNameOf(uint8)
-Expose_TNameOf(uint16)
-Expose_TNameOf(uint32)
-Expose_TNameOf(uint64)
-Expose_TNameOf(int8)	
-Expose_TNameOf(int16)
-Expose_TNameOf(int32)
-Expose_TNameOf(int64)
-Expose_TNameOf(float)
-Expose_TNameOf(double)
+Expose_TFriendlyNameOf(uint8, "Unsigned Integer (8-bits)")
+Expose_TFriendlyNameOf(uint16, "Unsigned Integer (16-bits)")
+Expose_TFriendlyNameOf(uint32, "Unsigned Integer (32-bits)")
+Expose_TFriendlyNameOf(uint64, "Unsigned Integer (64-bits)")
+Expose_TFriendlyNameOf(int8, "Integer (8-bits)")
+Expose_TFriendlyNameOf(int16, "Integer (16-bits)")
+Expose_TFriendlyNameOf(int32, "Integer (32-bits)")
+Expose_TFriendlyNameOf(int64, "Integer (64-bits)")
+Expose_TFriendlyNameOf(float, "Floating Point (32-bits)")
+Expose_TFriendlyNameOf(double, "Floating Point (64-bits)")
+Expose_TFriendlyNameOf(bool, "Boolean")
+Expose_TFriendlyNameOf(void, "Void")
+Expose_TFriendlyNameOf(char, "Character (utf-8)")
+Expose_TFriendlyNameOf(wchar_t, "Wide Character (utf-16)")
 
 /*----------------------------------------------------------------------------
 			TFormatSpecifier.
@@ -714,6 +719,7 @@ Expose_TFormatSpecifier(long double, "%f")
 			TTypeInfo.
 ----------------------------------------------------------------------------*/
 
+/** Oferece informações referente um tipo. */
 template<typename T>
 struct TTypeInfo
 {
@@ -785,21 +791,21 @@ public:
 	CONSTEXPR static uint32 *DimensionSizes = TArrayDimensionSizes<T>::Dimensions;
 
 public:
-
-	FORCEINLINE	static const TCHAR* GetFormatSpecifier()
+	
+	/** Caso seja um tipo aritmético retorna a formatação para a impressão desse tipo.  */
+	FORCEINLINE	static const TCHAR* GetArithmeticFormatSpecifier()
 	{
 		return TFormatSpecifier<T>::GetFormatSpecifier();
 	}
 
-	FORCEINLINE	static const TCHAR* GetName()
+	/**
+	 * Se for um tipo intrínseco da linguagem ou um objeto derivado
+	 * de LObject, retorna uma string com o nome desse tipo.
+	 */
+	FORCEINLINE	static const TCHAR* GetFriendlyName()
 	{
-		return TNameOf<T>::GetName();
+		return TFriendlyNameOf<T>::GetName();
 	}
-
-public:
-
-	using BaseType = REMOVE_CV(REMOVE_RPA(T));
-
 };
 
 /*----------------------------------------------------------------------------

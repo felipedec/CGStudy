@@ -33,9 +33,8 @@
 #include <string>
 
 #include "Macros.h"
-#include "Log.h"
-#include "GenericPlataform.h"
-#include "Math.h"
-#include "TypeTraits.h"
-#include "CurveUtility.h"
+#include "Platform/GenericPlataform.h"
+#include "Math/Math.h"
+#include "Template/TypeTraits.h"
+#include "Math/BezierUtil.h"
 #include "LinkedList.h"

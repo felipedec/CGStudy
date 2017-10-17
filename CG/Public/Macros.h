@@ -30,8 +30,8 @@
 #endif // __GNUC__
 
 #if defined(__clang__)
-	#define PUSH_MACRO(Name) _Pragma(PREPROCESSOR_TO_STRING(push_macro(PREPROCESSOR_TO_STRING(Name))))
-	#define POP_MACRO(Name) _Pragma(PREPROCESSOR_TO_STRING(pop_macro(PREPROCESSOR_TO_STRING(Name))))
+	#define PUSH_MACRO(Name) _Pragma(PREPROCESSOR_TO_STRING(Name)))
+	#define POP_MACRO(Name) _Pragma(PREPROCESSOR_TO_STRING(Name)))
 	#define WARNING(Code) _Pragma(warning(Code))
 #else
 	#define PUSH_MACRO(Name) __pragma(push_macro(PREPROCESSOR_TO_STRING(Name)))

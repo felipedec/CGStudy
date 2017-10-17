@@ -43,28 +43,28 @@ public:
 public:
 
 	/** Vetor global com todos componentes iguais a zero. */
-	static CORE_API const FVector Zero;
+	CORE_API static const FVector Zero;
 
 	/** Vetor global com todos componentes iguais a um. */
-	static CORE_API const FVector One;
+	CORE_API static const FVector One;
 
 	/** Vetor global normalizado direcionado para direita */
-	static CORE_API const FVector Right;
+	CORE_API static const FVector Right;
 
 	/** Vetor global normalizado direcionado para esquerda */
-	static CORE_API const FVector Left;
+	CORE_API static const FVector Left;
 
 	/** Vetor global normalizado direcionado para cima */
-	static CORE_API const FVector Up;
+	CORE_API static const FVector Up;
 
 	/** Vetor global normalizado direcionado para baixo */
-	static CORE_API const FVector Down;
+	CORE_API static const FVector Down;
 
 	/** Vetor global normalizado direcionado para trás */
-	static CORE_API const FVector Back;
+	CORE_API static const FVector Back;
 
 	/** Vetor global normalizado direcionado para frente */
-	static CORE_API const FVector Forward;
+	CORE_API static const FVector Forward;
 
 public:
 
@@ -118,15 +118,36 @@ public:
 	 * @param Scale Quanto devem ser multiplicado cada componente do vetor.
 	 * @return O resultado do vetor escalonado.
 	 */
-	FORCEINLINE FVector operator*(const float Scale) const;
+	template<typename T>
+	FORCEINLINE FVector operator*(const T& Scalar) const;
 
 	/**
 	 * Obtém o resultado da divisão de todos os componente do vetor por um valor.
 	 *
-	 * @param Scale Quanto devem ser dividido cada componente do vetor.
+	 * @param Scalar Quanto devem ser dividido cada componente do vetor.
 	 * @return O resultado do vetor escalonado.
 	 */
-	FORCEINLINE FVector operator/(const float Scale) const;
+	template<typename T>
+	FORCEINLINE FVector operator/(const T& Scalar) const;
+
+	/**
+	 * Multiplica cada componente do vetor por um valor.
+	 *
+	 * @param Scalar O quanto multiplicar os componentes.
+	 * @return Retorna a copia desse vetor após a operação.
+	 */
+	template<typename T>
+	FORCEINLINE FVector operator*=(const T& Scalar);
+
+	/**
+	* Divide cada componente do vetor por um valor.
+	*
+	* @param Scalar O quanto dividir os componentes.
+	* @return Retorna a copia desse vetor após a operação.
+	*/
+	template<typename T>
+	FORCEINLINE FVector operator/=(const T& Scalar);
+
 
 	/**
 	 * Obtém o resultado do produto escalar entre dois vetores.
@@ -186,22 +207,6 @@ public:
 	 * @return Retorna a copia desse vetor após a operação.
 	 */
 	FORCEINLINE FVector operator-=(const FVector& V);
-
-	/**
-	 * Multiplica cada componente do vetor por um valor.
-	 *
-	 * @param Scale O quanto multiplicar os componentes.
-	 * @return Retorna a copia desse vetor após a operação.
-	 */
-	FORCEINLINE FVector operator*=(float Scale);
-
-	/**
-	 * Divide cada componente do vetor por um valor.
-	 *
-	 * @param Scale O quanto dividir os componentes.
-	 * @return Retorna a copia desse vetor após a operação.
-	 */
-	FORCEINLINE FVector operator/=(float Scale);
 
 	/**
 	 * Obtém a referência de um componente pelo seu índice.
@@ -264,12 +269,17 @@ public:
 	 * @return Distância dos doís vetores.
 	 */
 	FORCEINLINE static float Distance(const FVector& V1, const FVector& V2);
+
+public:
+
+	FORCEINLINE static FVector Lerp(const FVector& Lhs, const FVector& Rhs, float T);
+
 };
 
 /* ---------------- Inline functions ---------------- */
 
-#include "Vector4.h"
-#include "Vector2.h"
+#include "Math/Vector4.h"
+#include "Math/Vector2.h"
 
 
 FORCEINLINE FVector::FVector(const float InX, const float InY, const float InZ) :
@@ -313,14 +323,36 @@ FORCEINLINE FVector FVector::operator-(const FVector& V) const
 	return FVector(X - V.X, Y - V.Y, Z - V.Z);
 }
 
-FORCEINLINE FVector FVector::operator*(const float Scale) const
+template<typename T>
+FORCEINLINE FVector FVector::operator*(const T& Scalar) const
 {
-	return FVector(X * Scale, Y * Scale, Z * Scale);
+	static_assert(TIsArithmetic<T>::Value, "T must be a arithmetic type.");
+
+	return FVector(X * Scalar, Y * Scalar, Z * Scalar);
 }
 
-FORCEINLINE FVector FVector::operator/(const float Scale) const
+template<typename T>
+FORCEINLINE FVector FVector::operator/(const T& Scalar) const
 {
-	return FVector(X / Scale, Y / Scale, Z / Scale);
+	static_assert(TIsArithmetic<T>::Value, "T must be a arithmetic type.");
+
+	return FVector(X / Scalar, Y / Scalar, Z / Scalar);
+}
+
+template<typename T>
+FORCEINLINE FVector FVector::operator*=(const T& Scalar)
+{
+	static_assert(TIsArithmetic<T>::Value, "T must be a arithmetic type.");
+
+	return *this = *this * Scalar;
+}
+
+template<typename T>
+FORCEINLINE FVector FVector::operator/=(const T& Scalar)
+{
+	static_assert(TIsArithmetic<T>::Value, "T must be a arithmetic type.");
+
+	return *this = *this / Scalar;
 }
 
 FORCEINLINE float FVector::operator|(const FVector& V) const
@@ -356,16 +388,6 @@ FORCEINLINE FVector FVector::operator+=(const FVector& V)
 FORCEINLINE FVector FVector::operator-=(const FVector& V)
 {
 	return *this = *this - V;
-}
-
-FORCEINLINE FVector FVector::operator*=(float Scale)
-{
-	return *this = *this * Scale;
-}
-
-FORCEINLINE FVector FVector::operator/=(float Scale)
-{
-	return *this = *this / Scale;
 }
 
 FORCEINLINE float& FVector::operator[](int32_t Index)
@@ -418,4 +440,20 @@ FORCEINLINE FVector FVector::GetSafeNormal(float Tolerance) const
 
 	const float Scale = FMath::InvSqrt(SqrdMagnitude);
 	return FVector(X * Scale, Y * Scale, Z * Scale);
+}
+
+FORCEINLINE FVector FVector::Lerp(const FVector & Lhs, const FVector & Rhs, float T)
+{
+	T = FMath::Clamp01(T);
+	return Lhs * (1 - T) + Rhs * T;
+}
+
+/* ---------------- Global operators functions ---------------- */
+
+template<typename T>
+FORCEINLINE FVector operator*(const T& Scalar, const FVector& V)
+{
+	static_assert(TIsArithmetic<T>::Value, "T must be a arithmetic type.");
+
+	return V * Scalar;
 }

@@ -39,22 +39,22 @@ public:
 public:
 
 	/** Vetor global com todos componentes iguais a zero. */
-	static const FVector2 Zero;
+	CORE_API static const FVector2 Zero;
 
 	/** Vetor global com todos componentes iguais a um. */
-	static const FVector2 One;
+	CORE_API static const FVector2 One;
 
 	/** Vetor global com componente X igual a um e Y zero. */
-	static const FVector2 Right;
+	CORE_API static const FVector2 Right;
 
 	/** Vetor global com componente X igual a menos um e Y zero. */
-	static const FVector2 Left;
+	CORE_API static const FVector2 Left;
 
 	/** Vetor global com componente Y igual a um e X zero. */
-	static const FVector2 Up;
+	CORE_API static const FVector2 Up;
 
 	/** Vetor global com componente menos Y igual a um e X zero. */
-	static const FVector2 Down;
+	CORE_API static const FVector2 Down;
 
 public:
 
@@ -246,11 +246,10 @@ public:
 	 */
 	FORCEINLINE static float Distance(const FVector2& V1, const FVector2& V2);
 
+public:
 
-	FORCEINLINE static FVector2 Lerp(const FVector2& Lhs, const FVector2& Rhs, const float T)
-	{
-		return Lhs * (1 - T) + Rhs * T;
-	}
+	FORCEINLINE static FVector2 Lerp(const FVector2& Lhs, const FVector2& Rhs, float T);
+
 };
 
 /* ---------------- Inline functions ---------------- */
@@ -364,4 +363,21 @@ FORCEINLINE FVector2 FVector2::GetNormalized() const
 FORCEINLINE FVector2 FVector2::Normalize()
 {
 	return *this = GetNormalized();
+}
+
+FORCEINLINE FVector2 FVector2::Lerp(const FVector2& Lhs, const FVector2& Rhs, float T)
+{
+	T = FMath::Clamp01(T);
+	return Lhs * (1 - T) + Rhs * T;
+}
+
+
+/* ---------------- Global operators functions ---------------- */
+
+template<typename T>
+FORCEINLINE FVector2 operator*(const T& Scalar, const FVector2& V)
+{
+	static_assert(TIsArithmetic<T>::Value, "T must be a arithmetic type.");
+
+		return V * Scalar;
 }

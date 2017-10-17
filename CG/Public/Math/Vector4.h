@@ -47,24 +47,17 @@ public:
 public:
 
 	/** Vetor global com todos componentes iguais a zero. */
-	static const FVector4 Zero;
+	CORE_API static const FVector4 Zero;
 
 	/** Vetor global com todos componentes iguais a um. */
-	static const FVector4 One;
+	CORE_API static const FVector4 One;
 
 public:
 
 	/** Construtor padrão sem inicialização dos componentes. */
 	FORCEINLINE FVector4() = default;
 
-	/**
-	 * Construtor utilizando valores iniciais para cada componente.
-	 *
-	 * @param InX Valor do componente X.
-	 * @param InY Valor do componente Y.
-	 * @param InZ Valor do componente Z.
-	 * @param InZ Valor do componente W.
-	 */
+	/** Construtor utilizando valores iniciais para cada componente. */
 	FORCEINLINE FVector4(const float InX, const float InY, const float InZ, const float InW);
 
 public:
@@ -215,11 +208,15 @@ public:
 	/** Normaliza o vetor e retorna uma copia dele */
 	FORCEINLINE FVector4 Normalize();
 
+public:
+
+	FORCEINLINE static FVector4 Lerp(const FVector4& Lhs, const FVector4& Rhs, float T);
+
 } GCC_ALIGN(16);
 
 /* ---------------- Inline functions ---------------- */
 
-#include "Vector.h"
+#include "Math/Vector.h"
 
 FORCEINLINE FVector4::FVector4(const float InX, const float InY, const float InZ, const float InW) :
 	X(InX),
@@ -259,7 +256,6 @@ FORCEINLINE float FVector4::operator|(const FVector4& V) const
 {
 	return X * V.X + Y * V.Y + Z * V.Z + W * V.W;
 }
-
 
 FORCEINLINE bool FVector4::operator==(const FVector4& V) const
 {
@@ -334,4 +330,21 @@ FORCEINLINE FVector4 FVector4::GetNormalized() const
 FORCEINLINE FVector4 FVector4::Normalize()
 {
 	return *this = GetNormalized();
+}
+
+FORCEINLINE FVector4 FVector4::Lerp(const FVector4& Lhs, const FVector4& Rhs, float T)
+{
+	T = FMath::Clamp01(T);
+	return Lhs * (1 - T) + Rhs * T;
+}
+
+
+/* ---------------- Global operators functions ---------------- */
+
+template<typename T>
+FORCEINLINE FVector4 operator*(const T& Scalar, const FVector4& V)
+{
+	static_assert(TIsArithmetic<T>::Value, "T must be a arithmetic type.")
+
+		return V * Scalar;
 }

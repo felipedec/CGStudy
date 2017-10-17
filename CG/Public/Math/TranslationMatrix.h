@@ -13,21 +13,27 @@
 
 #pragma once
 
-/*----------------------------------------------------------------------------	
-			Math.
-----------------------------------------------------------------------------*/
+#include "CoreTypes.h"
 
-class FMath;
-struct FMatrix;
-struct FVector2; 
-struct FVector;
-struct FVector4;
-struct FPlane;
-class FCurveUtility;
 
-/*----------------------------------------------------------------------------
-			Misc.
-----------------------------------------------------------------------------*/
- 
-class FSort;
-struct FGenericPlatformTypes;
+class FTranslationMatrix : public FMatrix
+{
+public:
+	/** Constrói a matríz basedo em um vetor passado */
+	FORCEINLINE FTranslationMatrix(const FVector& Delta)
+	: FMatrix
+	(
+		FVector4(1.0f, 0.0f, 0.0f, 0.0f),
+		FVector4(0.0f, 1.0f, 0.0f, 0.0f),
+		FVector4(0.0f, 0.0f, 1.0f, 0.0f),
+		FVector4(Delta.X, Delta.Y, Delta.Z, 1.0f)
+	) { }
+
+public:
+
+	/** Fábrica de matrízes */
+	static CORE_API FMatrix Make(const FVector& Delta)
+	{
+		return FTranslationMatrix(Delta);
+	}
+};

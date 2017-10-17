@@ -15,7 +15,7 @@
 
 #include "CoreFwd.h"
 
-class FCurveUtility
+class FBezierUtil
 {
 public:
 
@@ -48,16 +48,15 @@ public:
 	 * @param LhsTagent	Tangente do ponto de partida.
 	 * @param Rhs			Ponto de chegada da curva.
 	 * @param RhsTangent Tangente do ponto de chegada da curva.
-	 * @return O ponto da curva no índice T.
 	 */
 	template<typename TVector>
-	FORCEINLINE static TVector GetPoints(TVector* Dest, const SIZE_T Size, const TVector& Lhs, const TVector& LhsTangent, const TVector& Rhs, const TVector& RhsTangent)
+	FORCEINLINE static void GetPoints(TVector* Dest, const uint32 Size, const TVector& Lhs, const TVector& LhsTangent, const TVector& Rhs, const TVector& RhsTangent)
 	{
 		static_assert(TIsSame<FVector2, TVector>() || TIsSame<FVector, TVector>(), "TVector must be FVector or FVector2.");
 			
 		for (uint32 Index = 0; Index < Size; Index++)
 		{
-			Dest[Index] = GetPoint(Lhs, LhsTangent, Rhs, RhsTangent, static_cast<float>(Index) / (Size - 1));
+			Dest[Index] = GetPoint(Lhs, LhsTangent, Rhs, RhsTangent, Index / (Size - 1.0f));
 		}
 	}
-};
+}; 

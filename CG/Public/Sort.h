@@ -12,7 +12,7 @@
 ----------------------------------------------------------------------------*/
 
 #pragma once
-
+#pragma warning(push)
 #pragma warning(disable:4018)
 
 #include "Core.h"
@@ -21,29 +21,29 @@ template<typename T>
 using TCompareDelegate = bool(*)(const T&, const T&);
 
 template<typename T>
-using TSortDelegate = void(*)(T[], const SIZE_T, TCompareDelegate<T>);
+using TSortDelegate = void(*)(T[], const uint32, TCompareDelegate<T>);
 
 class FSort
 {
 public:
 
 	template<typename T>
-	FORCEINLINE static void CocktailSort(T Array[], const SIZE_T Size, TCompareDelegate<T> Compare)
+	FORCEINLINE static void CocktailSort(T Array[], const uint32 Size, TCompareDelegate<T> Compare)
 	{
 		if (Array == nullptr || Size < 2)
 		{
 			return;
 		}
 
-		SIZE_T Bottom = 0;
-		SIZE_T Top = Size - 1;
+		uint32 Bottom = 0;
+		uint32 Top = Size - 1;
 		bool bHasBeenSwapped = true;
 
 		while (Bottom < Top && bHasBeenSwapped)
 		{
 			bHasBeenSwapped = false;
 
-			for (SIZE_T Index = Bottom; Index < Top; Index++)
+			for (uint32 Index = Bottom; Index < Top; Index++)
 			{
 				if (Compare(Array[Index + 1], Array[Index]))
 				{
@@ -54,7 +54,7 @@ public:
 
 			Top--;
 
-			for (SIZE_T Index = Top; Index > Bottom; Index--)
+			for (uint32 Index = Top; Index > Bottom; Index--)
 			{
 				if (Compare(Array[Index], Array[Index - 1]))
 				{
@@ -68,18 +68,18 @@ public:
 	}
 
 	template<typename T>
-	FORCEINLINE static void SelectionSort(T Array[], const SIZE_T Size, TCompareDelegate<T> Compare)
+	FORCEINLINE static void SelectionSort(T Array[], const uint32 Size, TCompareDelegate<T> Compare)
 	{
 		if (Array == nullptr || Size < 2)
 		{
 			return;
 		}
 
-		for (SIZE_T Index = 0; Index < Size - 1; Index++)
+		for (uint32 Index = 0; Index < Size - 1; Index++)
 		{
-			SIZE_T LessIndex = Index;
+			uint32 LessIndex = Index;
 
-			for (SIZE_T Index2 = Index + 1; Index2 < Size; Index2++)
+			for (uint32 Index2 = Index + 1; Index2 < Size; Index2++)
 			{
 				if (Compare(Array[Index2], Array[LessIndex]))
 				{
@@ -95,16 +95,16 @@ public:
 	}
 
 	template<typename T>
-	FORCEINLINE static void BubbleSort(T Array[], const SIZE_T Size, TCompareDelegate<T> Compare)
+	FORCEINLINE static void BubbleSort(T Array[], const uint32 Size, TCompareDelegate<T> Compare)
 	{
 		if (Array == nullptr || Size < 2)
 		{
 			return;
 		}
 
-		for (SIZE_T Index = Size - 1; Index > 0; Index--)
+		for (uint32 Index = Size - 1; Index > 0; Index--)
 		{
-			for (SIZE_T Index2 = 0; Index2 < Index; Index2++)
+			for (uint32 Index2 = 0; Index2 < Index; Index2++)
 			{
 				if (Compare(Array[Index2], Array[Index2 + 1]))
 				{
@@ -115,17 +115,17 @@ public:
 	}
 
 	template<typename T>
-	FORCEINLINE static void InsertionSort(T Array[], const SIZE_T Size, TCompareDelegate<T> Compare)
+	FORCEINLINE static void InsertionSort(T Array[], const uint32 Size, TCompareDelegate<T> Compare)
 	{
 		if (Array == nullptr || Size < 2)
 		{
 			return;
 		}
 
-		for (SIZE_T Index = 1; Index < Size; Index++)
+		for (uint32 Index = 1; Index < Size; Index++)
 		{
 			T Temp = Array[Index];
-			SSIZE_T Index2 = Index - 1;
+			Suint32 Index2 = Index - 1;
 
 			while (Index2 >= 0 && Compare(Temp, Array[Index2]))
 			{
@@ -137,15 +137,17 @@ public:
 	}	
 
 	template<typename T>
-	FORCEINLINE static void CombSort(T Array[], const SIZE_T Size, TCompareDelegate<T> Compare)
+	FORCEINLINE static void CombSort(T Array[], const uint32 Size, TCompareDelegate<T> Compare)
 	{
+		const float ShrinkFactor = 1.247330950103979f;
+
 		if (Array == nullptr || Size < 2)
 		{
 			return;
 		}
 
-		SIZE_T Gap = static_cast<SIZE_T>(Size / 1.3f);
-		SIZE_T Index = 0;
+		uint32 Gap = static_cast<uint32>(Size / ShrinkFactor);
+		uint32 Index = 0;
 
 		while (Gap > 0 && Index < Size)
 		{
@@ -159,12 +161,12 @@ public:
 				}
 				Index++;
 			}
-			Gap = static_cast<SIZE_T>(Gap / 1.3f);
+			Gap = static_cast<uint32>(Gap / ShrinkFactor);
 		}
 	}
 
 	template<typename T>
-	FORCEINLINE static void ShellSort(T Array[], const SIZE_T Size, TCompareDelegate<T> Compare)
+	FORCEINLINE static void ShellSort(T Array[], const uint32 Size, TCompareDelegate<T> Compare)
 	{
 		if (Array == nullptr || Size < 2)
 		{
@@ -172,19 +174,20 @@ public:
 		}
 
 		bool bHasBeenSwapped = true;
-		SIZE_T Gap = Size;
+		uint32 Gap = Size;
 
-		while (bHasBeenSwapped || Gap > 1)
+		while (bHasBeenSwapped && Gap > 1)
 		{
 			bHasBeenSwapped = false;
 
 			Gap = (Gap + 1) / 2;
 
-			for (SIZE_T Index = 0; Index < Size - Gap; Index++)
+			for (uint32 Index = 0; Index < Size - Gap; Index++)
 			{
 				if (Compare(Array[Index + Gap], Array[Index]))
 				{
 					Swap(&Array[Index + Gap], &Array[Index]);
+					bHasBeenSwapped = true;
 				}
 			}
 		}
@@ -200,3 +203,5 @@ public:
 		*Rhs = Temp;
 	}
 };
+
+#pragma warning(pop)

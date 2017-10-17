@@ -17,7 +17,7 @@
 #include "CoreFwd.h"
 
 #if USE_DIRECTX_MATH == 1
-#include "DirectXMath.h"
+#include "Math/DirectXMath.h"
 #endif
 
 MS_ALIGN(16) struct FMatrix
@@ -50,7 +50,7 @@ public:
 public:
 
 	/** Matríz identidade */
-	static CORE_API FMatrix Identy;
+	CORE_API static const FMatrix Identy;
 
 public:
 
@@ -167,14 +167,14 @@ FORCEINLINE FMatrix::FMatrix(const FPlane& InX, const FPlane& InY, const FPlane&
 FORCEINLINE FMatrix FMatrix::operator*(const FMatrix& Other) const
 {
 	FMatrix Result;
-	VectorMatrixMultiply(&Result, this, &Other);
+	Engine_Private::VectorMatrixMultiply(&Result, *this, Other);
 	
 	return Result;
 }
 
 FORCEINLINE void FMatrix::operator*=(const FMatrix& Other) const
 {		
-	VectorMatrixMultiply((FMatrix*)this, this, &Other);
+	Engine_Private::VectorMatrixMultiply((FMatrix*)this, *this, Other);
 }
 
 FORCEINLINE FMatrix FMatrix::operator+(const FMatrix& Other) const
@@ -245,7 +245,7 @@ FORCEINLINE FMatrix FMatrix::GetTransposed() const
 FORCEINLINE FMatrix FMatrix::Inverse() const
 {
 	FMatrix Result;
-	VectorMatrixInverse(&Result, this);
+	Engine_Private::VectorMatrixInverse(&Result, *this);
 
 	return Result;
 }
@@ -253,7 +253,7 @@ FORCEINLINE FMatrix FMatrix::Inverse() const
 FORCEINLINE FVector4 FMatrix::TransformFVector4(const FVector4& Vector) const
 {
 	FVector4 Result;
-	VectorMatrixTransformFVector4(&Result, this, &Vector);
+	Engine_Private::VectorMatrixTransformFVector4(&Result, *this, Vector);
 
 	return Result;
 }

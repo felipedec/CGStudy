@@ -15,18 +15,23 @@
 			Este arquivo contradiz um pouco o cabeçalho, poís é basicamente
 			uma tradução do Engine/Source/Runtime/Core/Public/Plane.h, já
 			que não ha muito o que se diferenciar da implementação original
-			da Epic Games.
+			da própria Epic Games.
 ----------------------------------------------------------------------------*/
 
 #pragma once
 
 #include "Core.h"
 
+/**
+ * Essa estrutura possui quatro coeficientes que representam a equação
+ * geral do plano, podendo ser representdada por X*x + Y*y + Z*z = W,
+ * aonde a parte vetorial (X, Y, Z) deve estar normalizada. 
+ */
 MS_ALIGN(16) struct FPlane : public FVector
 {
 public:
 	
-	/** Componente w do plano */
+	/** Componente linear do plano */
 	float W;
 
 public:
@@ -56,7 +61,7 @@ public:
 	 * Construtor.
 	 *
 	 * @param InNormal Normal do plano.
-	 * @param InW Coeficiente W do plano.
+	 * @param InW Coeficiente linear do plano.
 	 */
 	FORCEINLINE FPlane(FVector InNormal, float InW);
 
@@ -218,8 +223,8 @@ public:
 
 /* ---------------- Inline functions ---------------- */
 
-#include "Vector.h"
-#include "Vector4.h"
+#include "Math/Vector.h"
+#include "Math/Vector4.h"
 
 FORCEINLINE FPlane::FPlane()
 {}
@@ -243,7 +248,6 @@ FORCEINLINE FPlane::FPlane(FVector InBase, const FVector &InNormal)
 	: FVector(InNormal)
 	, W(InBase | InNormal)
 {}
-
 
 FORCEINLINE FPlane::FPlane(FVector A, FVector B, FVector C)
 	: FVector(((B - A) ^ (C - A)).GetSafeNormal())

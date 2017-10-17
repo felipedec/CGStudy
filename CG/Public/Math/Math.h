@@ -40,7 +40,7 @@ private:
 
 public:
 
-	CONSTEXPR static float Pi = 3.14159265358979f;
+	CONSTEXPR static float Pi = 3.14159265358979323f;
 
 	CONSTEXPR static float SmallNumber = 1.e-8f;
 
@@ -55,12 +55,12 @@ public:
 	CONSTEXPR static float Delta = 0.00001f;
 
 	CONSTEXPR static float BigNumber = 3.4e+38f;
-
+	 
 public:
 
-	CONSTEXPR static float Rad2Deg = (360 / (Pi * 2));
+	CONSTEXPR static float Rad2Deg = (360.0f / (Pi * 2));
 
-	CONSTEXPR static float Deg2Rad = ((Pi * 2) / 360);
+	CONSTEXPR static float Deg2Rad = ((Pi * 2) / 360.0f);
 
 public:
 
@@ -85,7 +85,7 @@ public:
 	 * Obtém a raiz quadrada invertida do valor.
 	 *
 	 * @param Radicando.
-	 *	@return Retorna a raiz quadrada invertida.
+	 * @return Retorna a raiz quadrada invertida.
 	 * @ref http://www.files.sauliaus.info/InvSqrt.pdf
 	 */
 	FORCEINLINE static float InvSqrt(const float Value)

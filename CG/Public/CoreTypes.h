@@ -17,16 +17,26 @@
 			Math.
 ----------------------------------------------------------------------------*/
 
-#include "Vector2.h"
-#include "Vector.h"
-#include "Vector4.h"
-#include "Plane.h"
-#include "Matrix.h"
-#include "TranslationMatrix.h"
+#include "Math/Quaternion.h"
+#include "Math/Vector2.h"
+#include "Math/Vector.h"
+#include "Math/Vector4.h"
+#include "Math/Plane.h"
+#include "Math/Matrix.h"
+#include "Math/ClipProjectionMatrix.h"
+#include "Math/PerspectiveMatrix.h"
+#include "Math/TranslationMatrix.h"
+#include "Math/ScaleMatrix.h"
+#include "Math/BezierUtil.h"
 
 /*----------------------------------------------------------------------------
 			Misc.
 ----------------------------------------------------------------------------*/
 
 #include "Sort.h"
-#include "GenericPlataform.h"
+
+/*----------------------------------------------------------------------------
+			Platform.
+----------------------------------------------------------------------------*/
+
+#include "Platform/GenericPlataform.h"

@@ -1,99 +1,105 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    <Filter Include="Public">
+      <UniqueIdentifier>{4935345c-be7d-4919-b21d-5709469436da}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    <Filter Include="Private">
+      <UniqueIdentifier>{c9b4fc81-1c0b-4de7-8611-3e72b8aad837}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    <Filter Include="Public\Math">
+      <UniqueIdentifier>{3bfa2409-ac8a-4613-9f0f-8fe8c815bffb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Private\Math">
+      <UniqueIdentifier>{77fe092f-1f79-4d88-a84d-bd64a666670d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Public\Platform">
+      <UniqueIdentifier>{0e117497-7a7b-424d-9644-a3aefc37bd8d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Public\Templates">
+      <UniqueIdentifier>{0f8cff53-a4e7-42a1-a7bd-bffcab832551}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Public\LObject">
+      <UniqueIdentifier>{b5693a9e-8907-4989-8cdb-a41897386fdd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="ReadMe.txt" />
+    <ClCompile Include="Private\Math\Math.cpp">
+      <Filter>Private\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\CG.cpp">
+      <Filter>Private</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Math.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Public\Math\Vector.h">
+      <Filter>Public\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Core.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Public\Math\Vector2.h">
+      <Filter>Public\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Vector4.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Public\Math\Vector4.h">
+      <Filter>Public\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Vector2.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Public\Math\BezierUtil.h">
+      <Filter>Public\Math</Filter>
     </ClInclude>
-    <ClInclude Include="TypeTraits.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Public\Math\ClipProjectionMatrix.h">
+      <Filter>Public\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Macros.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Public\Math\DirectXMath.h">
+      <Filter>Public\Math</Filter>
     </ClInclude>
-    <ClInclude Include="CurveUtility.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Public\Math\Math.h">
+      <Filter>Public\Math</Filter>
     </ClInclude>
-    <ClInclude Include="CoreTypes.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Public\Math\Matrix.h">
+      <Filter>Public\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Sort.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Public\Math\Plane.h">
+      <Filter>Public\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Log.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Public\Math\Quaternion.h">
+      <Filter>Public\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Matrix.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Public\Math\ScaleMatrix.h">
+      <Filter>Public\Math</Filter>
     </ClInclude>
-    <ClInclude Include="DirectXMath.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Public\Math\TranslationMatrix.h">
+      <Filter>Public\Math</Filter>
     </ClInclude>
-    <ClInclude Include="TranslationMatrix.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Public\Template\TypeTraits.h">
+      <Filter>Public\Templates</Filter>
     </ClInclude>
-    <ClInclude Include="Plane.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Public\Platform\GenericPlataform.h">
+      <Filter>Public\Platform</Filter>
     </ClInclude>
-    <ClInclude Include="Vector.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Public\CoreTypes.h">
+      <Filter>Public</Filter>
     </ClInclude>
-    <ClInclude Include="CoreFwd.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Public\LinkedList.h">
+      <Filter>Public</Filter>
     </ClInclude>
-    <ClInclude Include="GenericPlataform.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Public\Log.h">
+      <Filter>Public</Filter>
     </ClInclude>
-    <ClInclude Include="FClipProjectionMatrix.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Public\Macros.h">
+      <Filter>Public</Filter>
     </ClInclude>
-    <ClInclude Include="Quaternion.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Public\Sort.h">
+      <Filter>Public</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="CG.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Vector4.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Vector3.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Vector2.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Matrix.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Quaternion.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
+    <ClInclude Include="Public\Core.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\CoreFwd.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\LObject\Object.h">
+      <Filter>Public\LObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\Math\PerspectiveMatrix.h">
+      <Filter>Public\Math</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

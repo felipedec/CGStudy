@@ -9,6 +9,8 @@ Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
+		Dll|x64 = Dll|x64
+		Dll|x86 = Dll|x86
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
 	EndGlobalSection
@@ -17,6 +19,10 @@ Global
 		{F129DD9D-FCBB-45F1-A57D-4215E5D24586}.Debug|x64.Build.0 = Debug|x64
 		{F129DD9D-FCBB-45F1-A57D-4215E5D24586}.Debug|x86.ActiveCfg = Debug|Win32
 		{F129DD9D-FCBB-45F1-A57D-4215E5D24586}.Debug|x86.Build.0 = Debug|Win32
+		{F129DD9D-FCBB-45F1-A57D-4215E5D24586}.Dll|x64.ActiveCfg = Dll|x64
+		{F129DD9D-FCBB-45F1-A57D-4215E5D24586}.Dll|x64.Build.0 = Dll|x64
+		{F129DD9D-FCBB-45F1-A57D-4215E5D24586}.Dll|x86.ActiveCfg = Dll|Win32
+		{F129DD9D-FCBB-45F1-A57D-4215E5D24586}.Dll|x86.Build.0 = Dll|Win32
 		{F129DD9D-FCBB-45F1-A57D-4215E5D24586}.Release|x64.ActiveCfg = Release|x64
 		{F129DD9D-FCBB-45F1-A57D-4215E5D24586}.Release|x64.Build.0 = Release|x64
 		{F129DD9D-FCBB-45F1-A57D-4215E5D24586}.Release|x86.ActiveCfg = Release|Win32
