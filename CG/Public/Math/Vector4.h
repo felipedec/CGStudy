@@ -346,5 +346,5 @@ FORCEINLINE FVector4 operator*(const T& Scalar, const FVector4& V)
 {
 	static_assert(TIsArithmetic<T>::Value, "T must be a arithmetic type.")
 
-		return V * Scalar;
+	return V * Scalar;
 }

@@ -27,7 +27,6 @@
 #include "Math/PerspectiveMatrix.h"
 #include "Math/TranslationMatrix.h"
 #include "Math/ScaleMatrix.h"
-#include "Math/BezierUtil.h"
 
 /*----------------------------------------------------------------------------
 			Misc.
@@ -36,7 +35,7 @@
 #include "Sort.h"
 
 /*----------------------------------------------------------------------------
-			Platform.
+			GenericPlatform.
 ----------------------------------------------------------------------------*/
 
-#include "Platform/GenericPlataform.h"
+#include "GenericPlatform/GenericPlatform.h"

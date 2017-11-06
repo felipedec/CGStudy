@@ -87,30 +87,3 @@ public:
 	typedef int32 TYPE_OF_NULL;
 	typedef decltype(nullptr) TYPE_OF_NULLPTR;
 };
-
-typedef FGenericPlatformTypes FPlataformTypes;
-
-typedef FPlataformTypes::uint8 uint8;
-typedef FPlataformTypes::uint16 uint16;
-typedef FPlataformTypes::uint32 uint32;
-typedef FPlataformTypes::uint64 uint64;
-
-typedef FPlataformTypes::int8 int8;
-typedef FPlataformTypes::int16 int16;
-typedef FPlataformTypes::int32 int32;
-typedef FPlataformTypes::int64 int64;
-
-typedef FPlataformTypes::ANSICHAR ANSICHAR;
-typedef FPlataformTypes::WIDECHAR WIDECHAR;
-typedef FPlataformTypes::CHAR8 CHAR8;
-typedef FPlataformTypes::CHAR16 CHAR16;
-typedef FPlataformTypes::CHAR32 CHAR32;
-typedef FPlataformTypes::TCHAR TCHAR;
-
-typedef FPlataformTypes::UPTRINT UPTRINT;
-typedef FPlataformTypes::PTRINT PTRINT;
-
-typedef FPlataformTypes::SIZE_T SIZE_T;
-typedef FPlataformTypes::SSIZE_T SSIZE_T;
-typedef FPlataformTypes::TYPE_OF_NULL TYPE_OF_NULL;
-typedef FPlataformTypes::TYPE_OF_NULLPTR TYPE_OF_NULLPTR;

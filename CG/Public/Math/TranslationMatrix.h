@@ -19,7 +19,7 @@
 class FTranslationMatrix : public FMatrix
 {
 public:
-	/** Constrói a matríz basedo em um vetor passado */
+
 	FORCEINLINE FTranslationMatrix(const FVector& Delta)
 	: FMatrix
 	(
@@ -36,4 +36,11 @@ public:
 	{
 		return FTranslationMatrix(Delta);
 	}
+
+	/** Fábrica de matrízes */
+	static CORE_API FMatrix Make(const float X, const float Y, const float Z)
+	{
+		return FTranslationMatrix(FVector(X, Y, Z));
+	}
 };
+  

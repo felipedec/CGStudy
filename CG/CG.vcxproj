@@ -27,18 +27,18 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Private\CG.cpp" />
+    <ClCompile Include="Private\WindowsMain.cpp" />
     <ClCompile Include="Private\Math\Math.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Public\Core.h" />
     <ClInclude Include="Public\CoreFwd.h" />
     <ClInclude Include="Public\CoreTypes.h" />
-    <ClInclude Include="Public\LinkedList.h" />
+    <ClInclude Include="Public\GenericPlatform\GenericPlatform.h" />
+    <ClInclude Include="Public\GenericPlatform\GenericPlatformNativeConsole.h" />
+    <ClInclude Include="Public\HAL\Platform.h" />
     <ClInclude Include="Public\LObject\Object.h" />
-    <ClInclude Include="Public\Log.h" />
     <ClInclude Include="Public\Macros.h" />
-    <ClInclude Include="Public\Math\BezierUtil.h" />
     <ClInclude Include="Public\Math\ClipProjectionMatrix.h" />
     <ClInclude Include="Public\Math\DirectXMath.h" />
     <ClInclude Include="Public\Math\Math.h" />
@@ -51,9 +51,10 @@
     <ClInclude Include="Public\Math\Vector.h" />
     <ClInclude Include="Public\Math\Vector2.h" />
     <ClInclude Include="Public\Math\Vector4.h" />
-    <ClInclude Include="Public\Platform\GenericPlataform.h" />
     <ClInclude Include="Public\Sort.h" />
     <ClInclude Include="Public\Template\TypeTraits.h" />
+    <ClInclude Include="Public\Windows\Windows.h" />
+    <ClInclude Include="Public\Windows\WindowsNativeConsole.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
@@ -129,25 +130,41 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>Public;$(IncludePath)</IncludePath>
+    <IncludePath>C:\GLEW\include;Public;$(IncludePath)</IncludePath>
     <SourcePath>Private;$(SourcePath)</SourcePath>
+    <LibraryPath>C:\GLEW\lib\Release\Win32;$(LibraryPath)</LibraryPath>
+    <ExecutablePath>C:\GLEW\bin\Release\Win32;$(ExecutablePath)</ExecutablePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>Public;$(IncludePath)</IncludePath>
+    <IncludePath>C:\GLEW\include;Public;$(IncludePath)</IncludePath>
     <SourcePath>Private;$(SourcePath)</SourcePath>
+    <LibraryPath>C:\GLEW\lib\Release\x64;$(LibraryPath)</LibraryPath>
+    <ExecutablePath>C:\GLEW\bin\Release\x64;$(ExecutablePath)</ExecutablePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>C:\GLEW\include;Public;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\GLEW\lib\Release\Win32;$(LibraryPath)</LibraryPath>
+    <ExecutablePath>C:\GLEW\bin\Release\Win32;$(ExecutablePath)</ExecutablePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Dll|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>C:\GLEW\include;Public;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\GLEW\lib\Release\Win32;$(LibraryPath)</LibraryPath>
+    <ExecutablePath>C:\GLEW\bin\Release\Win32;$(ExecutablePath)</ExecutablePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>C:\GLEW\include;Public;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\GLEW\lib\Release\x64;$(LibraryPath)</LibraryPath>
+    <ExecutablePath>C:\GLEW\bin\Release\x64;$(ExecutablePath)</ExecutablePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Dll|x64'">
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>C:\GLEW\include;Public;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\GLEW\lib\Release\x64;$(LibraryPath)</LibraryPath>
+    <ExecutablePath>C:\GLEW\bin\Release\x64;$(ExecutablePath)</ExecutablePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -155,12 +172,15 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>MaxSpeed</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;PLATFORM_WINDOWS;%(PreprocessorDefinitions);PLATFORM_WINDOWS</PreprocessorDefinitions>
       <CallingConvention>Cdecl</CallingConvention>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <StringPooling>true</StringPooling>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
+      <IgnoreAllDefaultLibraries>
+      </IgnoreAllDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -169,12 +189,15 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);PLATFORM_WINDOWS;PLATFORM_HAS_NATIVE_CONSOLE;PLATFORM_HAS_NATIVE_CONSOLE</PreprocessorDefinitions>
       <CallingConvention>Cdecl</CallingConvention>
       <PrecompiledHeaderFile>Core.h</PrecompiledHeaderFile>
+      <StringPooling>true</StringPooling>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
+      <IgnoreAllDefaultLibraries>
+      </IgnoreAllDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -185,12 +208,15 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions);PLATFORM_WINDOWS</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <IgnoreAllDefaultLibraries>
+      </IgnoreAllDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dll|Win32'">
@@ -201,12 +227,15 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions);PLATFORM_WINDOWS</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <IgnoreAllDefaultLibraries>
+      </IgnoreAllDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -217,13 +246,16 @@
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);PLATFORM_WINDOWS;PLATFORM_HAS_NATIVE_CONSOLE;PLATFORM_HAS_NATIVE_CONSOLE</PreprocessorDefinitions>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <StringPooling>true</StringPooling>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <IgnoreAllDefaultLibraries>
+      </IgnoreAllDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dll|x64'">
@@ -234,12 +266,15 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);PLATFORM_WINDOWS;PLATFORM_HAS_NATIVE_CONSOLE;PLATFORM_HAS_NATIVE_CONSOLE</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <IgnoreAllDefaultLibraries>
+      </IgnoreAllDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

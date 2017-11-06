@@ -16,7 +16,7 @@
 #include "Core.h"
 #include "CoreFwd.h"
 
-#if USE_DIRECTX_MATH == 1
+#if defined(USE_DIRECTX_MATH)
 #include "Math/DirectXMath.h"
 #endif
 

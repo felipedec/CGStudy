@@ -13,11 +13,6 @@
 
 #pragma once
 
-#define FORCEINLINE __forceinline
-#define CONSTEXPR	constexpr
-
-#define TEXT(Txt) (L##Txt)
-
 #define PREPROCESSOR_TO_STRING(x) PREPROCESSOR_TO_STRING_INNER(x)
 #define PREPROCESSOR_TO_STRING_INNER(x) #x
 

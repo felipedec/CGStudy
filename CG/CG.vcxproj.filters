@@ -13,21 +13,33 @@
     <Filter Include="Private\Math">
       <UniqueIdentifier>{77fe092f-1f79-4d88-a84d-bd64a666670d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Public\Platform">
-      <UniqueIdentifier>{0e117497-7a7b-424d-9644-a3aefc37bd8d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Public\Templates">
-      <UniqueIdentifier>{0f8cff53-a4e7-42a1-a7bd-bffcab832551}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Public\LObject">
       <UniqueIdentifier>{b5693a9e-8907-4989-8cdb-a41897386fdd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Public\RHI">
+      <UniqueIdentifier>{2d1a534e-1d04-49d7-98a7-593bdee5e33c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Public\Windows">
+      <UniqueIdentifier>{902d8788-51dd-4c93-8258-efce708ed696}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Public\HAL">
+      <UniqueIdentifier>{0a8ca26b-12a4-474f-bedf-b189e83eb520}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Public\GenericPlatform">
+      <UniqueIdentifier>{0e117497-7a7b-424d-9644-a3aefc37bd8d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Public\Temp">
+      <UniqueIdentifier>{8df5e88e-2d3e-4446-a13e-7140a230b58e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Public\Template">
+      <UniqueIdentifier>{0f8cff53-a4e7-42a1-a7bd-bffcab832551}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Private\Math\Math.cpp">
       <Filter>Private\Math</Filter>
     </ClCompile>
-    <ClCompile Include="Private\CG.cpp">
+    <ClCompile Include="Private\WindowsMain.cpp">
       <Filter>Private</Filter>
     </ClCompile>
   </ItemGroup>
@@ -39,9 +51,6 @@
       <Filter>Public\Math</Filter>
     </ClInclude>
     <ClInclude Include="Public\Math\Vector4.h">
-      <Filter>Public\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\Math\BezierUtil.h">
       <Filter>Public\Math</Filter>
     </ClInclude>
     <ClInclude Include="Public\Math\ClipProjectionMatrix.h">
@@ -69,18 +78,9 @@
       <Filter>Public\Math</Filter>
     </ClInclude>
     <ClInclude Include="Public\Template\TypeTraits.h">
-      <Filter>Public\Templates</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\Platform\GenericPlataform.h">
-      <Filter>Public\Platform</Filter>
+      <Filter>Public\Template</Filter>
     </ClInclude>
     <ClInclude Include="Public\CoreTypes.h">
-      <Filter>Public</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\LinkedList.h">
-      <Filter>Public</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\Log.h">
       <Filter>Public</Filter>
     </ClInclude>
     <ClInclude Include="Public\Macros.h">
@@ -100,6 +100,21 @@
     </ClInclude>
     <ClInclude Include="Public\Math\PerspectiveMatrix.h">
       <Filter>Public\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\HAL\Platform.h">
+      <Filter>Public\HAL</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\GenericPlatform\GenericPlatformNativeConsole.h">
+      <Filter>Public\GenericPlatform</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\Windows\Windows.h">
+      <Filter>Public\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\GenericPlatform\GenericPlatform.h">
+      <Filter>Public\GenericPlatform</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\Windows\WindowsNativeConsole.h">
+      <Filter>Public\Windows</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

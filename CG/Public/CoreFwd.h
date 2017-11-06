@@ -24,16 +24,14 @@ class FTranslationMatrix;
 class FClipProjectionMatrix;
 class FPerspectiveMatrix;
 class FReversedZPerspectiveMatrix;
-struct FVector2; 
+struct FVector2;
 struct FVector;
 struct FVector4;
 struct FPlane;
 struct FQuaternion;
-class FBezierUtil;
 
 /*----------------------------------------------------------------------------
 			Misc.
 ----------------------------------------------------------------------------*/
  
 class FSort;
-struct FGenericPlatformTypes;
