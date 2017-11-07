@@ -35,7 +35,7 @@ static WORD WinColorsLookUpTable[ENativeConsoleTextColor::Count];
 /** Handle para o dispositivo padrão de saída */
 static HANDLE StdOutputConsoleHadle;
 /** Buffer utilizado para formatar armazenar as string formatadas */
-static union { TCHAR Wide[255]; CHAR Ansi[512]; } Buffer;
+static union { TCHAR W[255]; CHAR A[512]; } Buffer;
 
 /*----------------------------------------------------------------------------
 			FWindowsNativeConsole.
@@ -87,16 +87,16 @@ public:
 	FORCEINLINE static void Printf(ENativeConsoleTextColor Color, const TCHAR* Format, const TArgs&... Args)
 	{
 		Prepare(Color);
-		int32 Characters = swprintf_s(Buffer.Wide, Format, Args...);
-		WriteConsoleW(StdOutputConsoleHadle, Buffer.Wide, Characters, NULL, NULL);
+		int32 Characters = swprintf_s(Buffer.W, Format, Args...);
+		WriteConsoleW(StdOutputConsoleHadle, Buffer.W, Characters, NULL, NULL);
 	}
 
 	template <typename ...TArgs>
 	FORCEINLINE static void Printf(ENativeConsoleTextColor Color, const CHAR* Format, const TArgs&... Args)
 	{
 		Prepare(Color);
-		int32 Characters = sprintf_s(Buffer.Ansi, Format, Args...);
-		WriteConsoleA(StdOutputConsoleHadle, Buffer.Ansi, Characters, NULL, NULL);
+		int32 Characters = sprintf_s(Buffer.A, Format, Args...);
+		WriteConsoleA(StdOutputConsoleHadle, Buffer.A, Characters, NULL, NULL);
 	}
 
 	FORCEINLINE static void Close()

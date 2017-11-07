@@ -17,11 +17,9 @@
 			Module.
 ----------------------------------------------------------------------------*/
 
-#define CORE_API 
-
+#define CORE_API
 #define FORCEINLINE __forceinline
-#define CONSTEXPR	constexpr
-
+#define CONSTEXPR constexpr
 
 /*----------------------------------------------------------------------------
 			Platform Macros.

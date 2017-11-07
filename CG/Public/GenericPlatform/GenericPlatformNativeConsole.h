@@ -15,6 +15,10 @@
 
 #include "Core.h"
 
+/*----------------------------------------------------------------------------
+			ENativeConsoleTextColor.
+----------------------------------------------------------------------------*/
+
 enum ENativeConsoleTextColor : uint8
 {
 	Neutral,
@@ -26,11 +30,10 @@ enum ENativeConsoleTextColor : uint8
 	Count
 };
 
-/**
- * Esta estrutura não chega ser usada, a utilidade dela é só para servir como referência,
- * caso queira implementar o console nativo de uma plataforma é necassário que a estrutura 
- * possua todos os metodos assim como nesta estrutura.
- */
+/*----------------------------------------------------------------------------
+			FGenericPlatformNativeConsole.
+----------------------------------------------------------------------------*/
+
 class FGenericPlatformNativeConsole
 {
 public:

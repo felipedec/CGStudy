@@ -65,13 +65,18 @@ typedef FPlatformTypes::TYPE_OF_NULLPTR TYPE_OF_NULLPTR;
 #include "Template/TypeTraits.h"
 
 /*----------------------------------------------------------------------------
-			FNativeConsole.
+			Plataformas.
 ----------------------------------------------------------------------------*/
 
 #if defined(PLATFORM_WINDOWS)
+	// FNativeConsole
 	#define PLATFORM_HAS_NATIVE_CONSOLE
 	#include "Windows/WindowsNativeConsole.h"
 	typedef FWindowsNativeConsole FNativeConsole;
+#else
+	// FNativeConsole
+	#include "GenericPlatform/GenericPlatformNativeConsole.h"
+	typedef FGenericPlatformNativeConsole FNativeConsole;
 #endif
 
 /*----------------------------------------------------------------------------
@@ -83,14 +88,14 @@ typedef FPlatformTypes::TYPE_OF_NULLPTR TYPE_OF_NULLPTR;
 #endif // TEXT
 
 #if defined(_DEBUG) && defined(PLATFORM_HAS_NATIVE_CONSOLE)
-	#define LE_Log(...) FNativeConsole::Printf(ENativeConsoleTextColor::Neutral, __VA_ARGS__)
-	#define LE_LogWarning(...) FNativeConsole::Printf(ENativeConsoleTextColor::Warning, __VA_ARGS__)
-	#define LE_LogError(...) FNativeConsole::Printf(ENativeConsoleTextColor::Error, __VA_ARGS__)
-	#define LE_LogSuccess(...) FNativeConsole::Printf(ENativeConsoleTextColor::Success, __VA_ARGS__)
+	#define LE_DebugLog(...) FNativeConsole::Printf(ENativeConsoleTextColor::Neutral, __VA_ARGS__)
+	#define LE_DebugLogWarning(...) FNativeConsole::Printf(ENativeConsoleTextColor::Warning, __VA_ARGS__)
+	#define LE_DebugLogError(...) FNativeConsole::Printf(ENativeConsoleTextColor::Error, __VA_ARGS__)
+	#define LE_DebugLogSuccess(...) FNativeConsole::Printf(ENativeConsoleTextColor::Success, __VA_ARGS__)
 #else
-	#define LE_Log(...)
-	#define LE_LogWarning(...)
-	#define LE_LogError(...)
-	#define LE_LogSuccess(...)
+	#define LE_DebugLog(...)
+	#define LE_DebugLogWarning(...)
+	#define LE_DebugLogError(...)
+	#define LE_DebugLogSuccess(...)
 #endif 
 

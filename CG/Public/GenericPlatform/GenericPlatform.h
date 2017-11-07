@@ -87,3 +87,4 @@ public:
 	typedef int32 TYPE_OF_NULL;
 	typedef decltype(nullptr) TYPE_OF_NULLPTR;
 };
+

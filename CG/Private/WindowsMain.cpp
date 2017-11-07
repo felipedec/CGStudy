@@ -104,36 +104,34 @@ public:
 
 		glGenBuffers(1, &VerticesBuffer);
 		glBindBuffer(GL_ARRAY_BUFFER, VerticesBuffer);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(FVertex) * 3, Vertices.data(), GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(FVertex) * Vertices.size(), Vertices.data(), GL_STATIC_DRAW);
 
 		glGenBuffers(1, &IndicesBuffer);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IndicesBuffer);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(int16) * 3, Indices.data(), GL_STATIC_DRAW);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(int16) * Indices.size(), Indices.data(), GL_STATIC_DRAW);
 	}
 
 	FORCEINLINE void Draw() const
 	{
-		if (Indices.size() == 0 || Vertices.size() == 0 || !VerticesBuffer || !IndicesBuffer)
-		{
-			return;
-		}
-
 		glBindBuffer(GL_ARRAY_BUFFER, VerticesBuffer);
-
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(FVertex), (void*)offsetof(FVertex, Position));
-
-		glEnableVertexAttribArray(1);
-		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(FVertex), (void*)offsetof(FVertex, Normal));
-
-		glEnableVertexAttribArray(2); 
-		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(FVertex), (void*)offsetof(FVertex, TexCoord0)); 
-
-		glEnableVertexAttribArray(3);
-		glVertexAttribPointer(3, 1, GL_BYTE, GL_FALSE, sizeof(FVertex), (void*)offsetof(FVertex, Color));
-
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IndicesBuffer);
-		glDrawElements(GL_TRIANGLES, Indices.size(), GL_UNSIGNED_SHORT, Indices.data());
+
+		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+		glEnableClientState(GL_NORMAL_ARRAY);
+		glEnableClientState(GL_VERTEX_ARRAY);
+		glEnableClientState(GL_COLOR_ARRAY);
+
+		glTexCoordPointer(2, GL_FLOAT, sizeof(FVertex), (void*)offsetof(FVertex, TexCoord0));
+		glNormalPointer(GL_FLOAT, sizeof(FVertex), (void*)offsetof(FVertex, Normal));
+		glVertexPointer(3, GL_FLOAT, sizeof(FVertex), (void*)offsetof(FVertex, Position));
+		glColorPointer(4, GL_UNSIGNED_BYTE, sizeof(FVertex), (void*)offsetof(FVertex, Color));
+
+		glDrawElements(GL_TRIANGLES, Indices.size(), GL_UNSIGNED_SHORT, NULL);
+
+		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+		glDisableClientState(GL_NORMAL_ARRAY);
+		glDisableClientState(GL_VERTEX_ARRAY);
+		glDisableClientState(GL_COLOR_ARRAY);
 
 	}
 };
@@ -181,7 +179,7 @@ FORCEINLINE void MainLoop()
 		}
 		else
 		{
-			glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+			glClearColor(1.0f, 0.0f, 0.0f, 0.0f);
 			glClear(GL_COLOR_BUFFER_BIT);
 
 			glPushMatrix();
@@ -259,13 +257,13 @@ int32 WINAPI WinMain(HINSTANCE InstanceHandle, HINSTANCE PrevInstanceHandle, LPS
 
 	// Exibir informações
 	{
-		LE_Log(TEXT("Placa de vídeo: "));
-		LE_Log((CHAR*)glGetString(GL_RENDERER));
-		LE_Log("\n");
+		LE_DebugLog(TEXT("Placa de vídeo: "));
+		LE_DebugLog((CHAR*)glGetString(GL_RENDERER));
+		LE_DebugLog("\n");
 
-		LE_Log(TEXT("Versão OpenGL: "));
-		LE_Log((CHAR*)glGetString(GL_VERSION));
-		LE_Log("\n");
+		LE_DebugLog(TEXT("Versão OpenGL: "));
+		LE_DebugLog((CHAR*)glGetString(GL_VERSION));
+		LE_DebugLog("\n");
 	}
 
 	// Iniciar Glew
@@ -276,12 +274,12 @@ int32 WINAPI WinMain(HINSTANCE InstanceHandle, HINSTANCE PrevInstanceHandle, LPS
 
 	// Definir objeto de exemplo
 	{
-		ExampleMesh.Indices = { 0, 1, 2, 2, 1, 0 };
+		ExampleMesh.Indices = { 0, 1, 2 };
 		ExampleMesh.Vertices =
 		{
-			FVertex(FVector(0.0f, 1.0f, 0.0f), FVector::Forward, FVector2::Zero, 0xFFFFFFFF),
+			FVertex(FVector(0.0f, 1.0f, 0.0f), FVector::Forward, FVector2::Zero, 0xFF00FF00),
 			FVertex(FVector(0.87f, -0.5f, 0.0f), FVector::Forward, FVector2::Zero, 0xFFFFFFFF),
-			FVertex(FVector(-0.87f, -0.5f, 0.0f), FVector::Forward, FVector2::Zero, 0xFFFFFFFF),
+			FVertex(FVector(-0.87f, -0.5f, 0.0f), FVector::Forward, FVector2::Zero, 0x00FFFFFF),
 		};
 		ExampleMesh.CreateVBOs();
 	}
