@@ -21,12 +21,18 @@ class FTranslationMatrix : public FMatrix
 public:
 
 	FORCEINLINE FTranslationMatrix(const FVector& Delta)
-	: FMatrix
+		: FTranslationMatrix(Delta.X, Delta.Y, Delta.Z)
+	{
+
+	}
+
+	FORCEINLINE FTranslationMatrix(const float X, const float Y, const float Z)
+		: FMatrix
 	(
 		FVector4(1.0f, 0.0f, 0.0f, 0.0f),
 		FVector4(0.0f, 1.0f, 0.0f, 0.0f),
 		FVector4(0.0f, 0.0f, 1.0f, 0.0f),
-		FVector4(Delta.X, Delta.Y, Delta.Z, 1.0f)
+		FVector4(X, Y, Z, 1.0f)
 	) { }
 
 public:
@@ -40,7 +46,7 @@ public:
 	/** Fábrica de matrízes */
 	static CORE_API FMatrix Make(const float X, const float Y, const float Z)
 	{
-		return FTranslationMatrix(FVector(X, Y, Z));
+		return FTranslationMatrix(X, Y, Z);
 	}
 };
   

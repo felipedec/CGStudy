@@ -35,6 +35,7 @@
     <ClInclude Include="Public\CoreFwd.h" />
     <ClInclude Include="Public\CoreTypes.h" />
     <ClInclude Include="Public\GenericPlatform\GenericPlatform.h" />
+    <ClInclude Include="Public\GenericPlatform\GenericPlatformFile.h" />
     <ClInclude Include="Public\GenericPlatform\GenericPlatformNativeConsole.h" />
     <ClInclude Include="Public\HAL\Platform.h" />
     <ClInclude Include="Public\LObject\Object.h" />
@@ -53,6 +54,9 @@
     <ClInclude Include="Public\Math\Vector4.h" />
     <ClInclude Include="Public\Sort.h" />
     <ClInclude Include="Public\Template\TypeTraits.h" />
+    <ClInclude Include="Public\Temp\Color32.h" />
+    <ClInclude Include="Public\Temp\Shader.h" />
+    <ClInclude Include="Public\Temp\StaticMesh.h" />
     <ClInclude Include="Public\Windows\Windows.h" />
     <ClInclude Include="Public\Windows\WindowsNativeConsole.h" />
   </ItemGroup>
