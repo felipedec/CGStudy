@@ -1,10 +1,10 @@
 /*----------------------------------------------------------------------------
-			Este cÛdigo pertence a um projeto pessoal,
-			baseado no cÛdigo aberto da Unreal Engine,
+			Este c√≥digo pertence a um projeto pessoal,
+			baseado no c√≥digo aberto da Unreal Engine,
 			com o intuito de aprendizado. Apenas as
-			estrutura b·sica das classes s„o semelhantes
-			e as vezes iguais, j· os corpos de mÈtodos
-			s„o implementaÁıes prÛprias do desenvolvedor
+			estrutura b√°sica das classes s√£o semelhantes
+			e as vezes iguais, j√° os corpos de m√©todos
+			s√£o implementa√ß√µes pr√≥prias do desenvolvedor
 			deste projeto.
 			
 			Saiba mais:
@@ -15,7 +15,7 @@
 
 
 /*----------------------------------------------------------------------------
-			Estruturas tempor·rias.
+			Estruturas tempor√°rias.
 ----------------------------------------------------------------------------*/
 
 #include <vector>
@@ -71,7 +71,9 @@ class FMesh
 {
 private:
 
-	GLuint VerticesBuffer = 0, IndicesBuffer = 0;
+	uint32 VerticesBuffer = 0;
+	uint32 VertexArrayObject = 0;
+	uint32 IndicesBuffer = 0;
 
 	bool bCanDraw = false;
 
@@ -84,12 +86,12 @@ public:
 
 	FORCEINLINE ~FMesh()
 	{
-		DeleteBuffers();
+		Clear();
 	}
 
-public:
+private:
 
-	FORCEINLINE void DeleteBuffers()
+	FORCEINLINE void Clear()
 	{
 		if (VerticesBuffer || IndicesBuffer)
 		{
@@ -97,17 +99,28 @@ public:
 
 			glDeleteBuffers(1, &VerticesBuffer);
 			glDeleteBuffers(1, &IndicesBuffer);
+			glDeleteVertexArrays(1, &VertexArrayBuffer);
 		}
 	}
 	
-	FORCEINLINE void CreateVBOs()
+public:
+	
+	FORCEINLINE void CreateVertexArrayObject(uint32 Program)
 	{
-		DeleteBuffers();
+		Clear();
 
 		if (Indices.size() == 0 || Vertices.size() == 0)
 		{
 			return;
 		}
+		
+		int32 PositionAttribute = glGetUniformLocation(Program, "InPosition");
+		int32 NormalAttribute = glGetUniformLocation(Program, "InNormal");
+		int32 ColorAttribute = glGetUniformLocation(Program, "InColor");
+		int32 TexCoord0Attribute = glGetUniformLocation(Program, "InTexCoord0");
+		
+		glGenVertexArrays(1, &VertexArrayBuffer);
+		glBinVertexArray(VertexArrayBuffer);
 
 		glGenBuffers(1, &VerticesBuffer);
 		glBindBuffer(GL_ARRAY_BUFFER, VerticesBuffer);
@@ -116,30 +129,32 @@ public:
 		glGenBuffers(1, &IndicesBuffer);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IndicesBuffer);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(int16) * Indices.size(), Indices.data(), GL_STATIC_DRAW);
+		
+		glVertexAttribPointer(PositionAttribute, 3, GL_FLOAT, GL_FALSE, sizeof(FVertex), FVERTEX_MEMBER_OFFSET(Position));
+		glEnableVertexAttribArray(PositionAttribute);
+
+		glVertexAttribPointer(NormalAttribute, 3, GL_FLOAT, GL_TRUE, sizeof(FVertex), FVERTEX_MEMBER_OFFSET(Normal));
+		glEnableVertexAttribArray(NormalAttribute);
+
+		glVertexAttribPointer(ColorAttribute, 4, GL_UNSIGNED_BYTE, GL_FALSE, sizeof(FVertex), FVERTEX_MEMBER_OFFSET(Color));
+		glEnableVertexAttribArray(ColorAttribute);
+
+		glVertexAttribPointer(TexCoord0Attribute, 2, GL_FLOAT, GL_FALSE, sizeof(FVertex), FVERTEX_MEMBER_OFFSET(TexCoord0));
+		glEnableVertexAttribArray(TexCoord0Attribute);
 
 		bCanDraw = true;
 	}
 
-	FORCEINLINE void Draw(GLuint Program, const int32 PositionAttr, const int32 NormalAttr, const int32 ColorAttr, const int TexCoord0Attr) const
+	FORCEINLINE void Draw(unit32 Program) const
 	{
+		glBinVertexArray(VertexArrayObject);
 		glBindBuffer(GL_ARRAY_BUFFER, VerticesBuffer);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IndicesBuffer);
 
-		glVertexAttribPointer(PositionAttr, 3, GL_FLOAT, GL_FALSE, sizeof(FVertex), FVERTEX_MEMBER_OFFSET(Position));
-		glEnableVertexAttribArray(PositionAttr);
-
-		glVertexAttribPointer(NormalAttr, 3, GL_FLOAT, GL_TRUE, sizeof(FVertex), FVERTEX_MEMBER_OFFSET(Normal));
-		glEnableVertexAttribArray(NormalAttr);
-
-		glVertexAttribPointer(ColorAttr, 4, GL_UNSIGNED_BYTE, GL_FALSE, sizeof(FVertex), FVERTEX_MEMBER_OFFSET(Color));
-		glEnableVertexAttribArray(ColorAttr);
-
-		glVertexAttribPointer(TexCoord0Attr, 2, GL_FLOAT, GL_FALSE, sizeof(FVertex), FVERTEX_MEMBER_OFFSET(TexCoord0));
-		glEnableVertexAttribArray(TexCoord0Attr);
-
 		glUseProgram(Program);
-
+			
 		glDrawElements(GL_TRIANGLES, Indices.size(), GL_UNSIGNED_SHORT, NULL);
+		glBindVertexArray
 	}
 };
 
@@ -170,7 +185,7 @@ FORCEINLINE void MainLoop()
 	MSG Message;
 
 
-	GLuint VertexShader = glCreateShader(GL_VERTEX_SHADER);
+	uint32 VertexShader = glCreateShader(GL_VERTEX_SHADER);
 	{
 		static const char* VertexShaderSource = 
 		"																								\n\
@@ -193,9 +208,9 @@ FORCEINLINE void MainLoop()
 		glCompileShaderARB(VertexShader);
 	}
 
-	GLuint FragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+	uint32 FragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
 	{
-		const char* FragmentShaderSource = 
+		static const char* FragmentShaderSource = 
 		"																								\n\
 			#version 430																			\n\
 			void main()																				\n\
@@ -208,29 +223,41 @@ FORCEINLINE void MainLoop()
 		glShaderSourceARB(FragmentShader, 1, &FragmentShaderSource, &FragmentShaderSourceLength);
 		glCompileShaderARB(FragmentShader);
 	}
-
-	GLuint Program = glCreateProgram();
-
-	glAttachShader(Program, VertexShader);
-	glAttachShader(Program, FragmentShader);
-
-	glLinkProgramARB(Program);
-
-	int32 bIsLinked;
-
-	glGetProgramiv(Program, GL_LINK_STATUS, &bIsLinked);
-	if (!bIsLinked)
+	
+	
+	uint32 Program = glCreateProgram();
 	{
-		GLchar Error[512];
-		int32 ErrorLength;
-		glGetProgramInfoLog(Program, sizeof(Error), &ErrorLength, Error);
-		LE_DebugLogError(Error);
-	}
+		glAttachShader(Program, VertexShader);
+		glAttachShader(Program, FragmentShader);
 
-	int32 VertexPositionAttribute = glGetUniformLocation(Program, "InPosition");
-	int32 VertexNormalAttribute = glGetUniformLocation(Program, "InNormal");
-	int32 VertexColorAttribute = glGetUniformLocation(Program, "InColor");
-	int32 VertexTexCoord0Attribute = glGetUniformLocation(Program, "InTexCoord0");
+		glLinkProgramARB(Program);
+
+		int32 bIsLinked;
+
+		glGetProgramiv(Program, GL_LINK_STATUS, &bIsLinked);
+		if (!bIsLinked)
+		{
+			GLchar Error[512];
+			int32 ErrorLength;
+			
+			glGetProgramInfoLog(Program, sizeof(Error), &ErrorLength, Error);
+			
+			LE_DebugLogError(Error);
+			return;
+		}
+	}
+	
+	// Definir objeto de exemplo
+	{
+		ExampleMesh.Indices = { 0, 1, 2 };
+		ExampleMesh.Vertices =
+		{
+			FVertex(FVector(0.0f, 1.0f, 0.0f), FVector::Forward, FVector2::Zero, 0xFF00FF00),
+			FVertex(FVector(0.87f, -0.5f, 0.0f), FVector::Forward, FVector2::Zero, 0xFFFFFFFF),
+			FVertex(FVector(-0.87f, -0.5f, 0.0f), FVector::Forward, FVector2::Zero, 0x00FFFFFF),
+		};
+		ExampleMesh.CreateVertexArrayObject(Program);
+	}
 
 	FMatrix ModelMatrix = FQuaternion(0, 30, 0) * FTranslationMatrix(0.01f, 0.1f, 0.2f);
 
@@ -253,14 +280,7 @@ FORCEINLINE void MainLoop()
 			glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 			glClear(GL_COLOR_BUFFER_BIT);
 
-			ExampleMesh.Draw
-			(
-				Program, 
-				VertexPositionAttribute,
-				VertexNormalAttribute,
-				VertexColorAttribute,
-				VertexTexCoord0Attribute
-			);
+			ExampleMesh.Draw(Program);
 
 			SwapBuffers(GDeviceContextHandle);
 
@@ -333,9 +353,9 @@ int32 WINAPI WinMain(HINSTANCE InstanceHandle, HINSTANCE PrevInstanceHandle, LPS
 		wglMakeCurrent(GDeviceContextHandle, GOpenGLContextHandle);
 	}
 
-	// Exibir informaÁıes
+	// Exibir informa√ß√µes
 	{
-		LE_DebugLog(TEXT("%-36sVers„o OpenGL:\n"), TEXT("Placa de vÌdeo:"));
+		LE_DebugLog(TEXT("%-36sVers√£o OpenGL:\n"), TEXT("Placa de v√≠deo:"));
 		LE_DebugLog("%-36s%s\n", glGetString(GL_RENDERER), glGetString(GL_VERSION));
 	}
 
@@ -343,18 +363,6 @@ int32 WINAPI WinMain(HINSTANCE InstanceHandle, HINSTANCE PrevInstanceHandle, LPS
 	if (glewInit() != GLEW_OK)
 	{
 		goto DestroyContextAndClose;
-	}
-
-	// Definir objeto de exemplo
-	{
-		ExampleMesh.Indices = { 0, 1, 2 };
-		ExampleMesh.Vertices =
-		{
-			FVertex(FVector(0.0f, 1.0f, 0.0f), FVector::Forward, FVector2::Zero, 0xFF00FF00),
-			FVertex(FVector(0.87f, -0.5f, 0.0f), FVector::Forward, FVector2::Zero, 0xFFFFFFFF),
-			FVertex(FVector(-0.87f, -0.5f, 0.0f), FVector::Forward, FVector2::Zero, 0x00FFFFFF),
-		};
-		ExampleMesh.CreateVBOs();
 	}
 
 	// Loop principal
