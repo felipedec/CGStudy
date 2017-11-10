@@ -88,12 +88,18 @@ typedef FPlatformTypes::TYPE_OF_NULLPTR TYPE_OF_NULLPTR;
 #endif // TEXT
 
 #if defined(_DEBUG) && defined(PLATFORM_HAS_NATIVE_CONSOLE)
-	#define Private_LE_DebugLog(Color, ...) FNativeConsole::Printf(__FILE__ ## " (line:" ## __LINE__ ## "): " ## __VA_ARGS__)
+	#define LE_DebugLog_INNER(Color, ...) \
+		FNativeConsole::Printf( \
+		PREPROCESSOR_TO_STRING(__FILE__) \
+		" (line:" \
+		PREPROCESSOR_TO_STRING(__LINE__) \
+		"): " \
+		__VA_ARGS__) \
 
-	#define LE_DebugLog(...) Private_LE_DebugLog(ENativeConsoleTextColor::Neutral, __VA_ARGS__)
-	#define LE_DebugLogWarning(...) Private_LE_DebugLog(ENativeConsoleTextColor::Warning, __VA_ARGS__)
-	#define LE_DebugLogError(...) Private_LE_DebugLog(ENativeConsoleTextColor::Error, __VA_ARGS__)
-	#define LE_DebugLogSuccess(...) Private_LE_DebugLog(ENativeConsoleTextColor::Success, __VA_ARGS__)
+	#define LE_DebugLog(...) LE_DebugLog_INNER(ENativeConsoleTextColor::Neutral, __VA_ARGS__)
+	#define LE_DebugLogWarning(...) LE_DebugLog_INNER(ENativeConsoleTextColor::Warning, __VA_ARGS__)
+	#define LE_DebugLogError(...) LE_DebugLog_INNER(ENativeConsoleTextColor::Error, __VA_ARGS__)
+	#define LE_DebugLogSuccess(...) LE_DebugLog_INNER(ENativeConsoleTextColor::Success, __VA_ARGS__)
 #else
 	#define LE_DebugLog(...)
 	#define LE_DebugLogWarning(...)
