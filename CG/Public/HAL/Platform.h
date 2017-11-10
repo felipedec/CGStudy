@@ -1,10 +1,10 @@
 /*----------------------------------------------------------------------------
-			Este cÛdigo pertence a um projeto pessoal,
-			baseado no cÛdigo aberto da Unreal Engine,
+			Este c√≥digo pertence a um projeto pessoal,
+			baseado no c√≥digo aberto da Unreal Engine,
 			com o intuito de aprendizado. Apenas as
-			estrutura b·sica das classes s„o semelhantes
-			e as vezes iguais, j· os corpos de mÈtodos
-			s„o implementaÁıes prÛprias do desenvolvedor
+			estrutura b√°sica das classes s√£o semelhantes
+			e as vezes iguais, j√° os corpos de m√©todos
+			s√£o implementa√ß√µes pr√≥prias do desenvolvedor
 			deste projeto.
 			
 			Saiba mais:
@@ -27,7 +27,7 @@
 #endif
 
 /*----------------------------------------------------------------------------
-			DefiniÁ„o dos tipos.
+			Defini√ß√£o dos tipos.
 ----------------------------------------------------------------------------*/
 
 typedef FPlatformTypes::uint8 uint8;
@@ -57,8 +57,8 @@ typedef FPlatformTypes::TYPE_OF_NULLPTR TYPE_OF_NULLPTR;
 
 /*----------------------------------------------------------------------------
 			Para disponiblizar os TypeTraits para os documentos
-			que tratam da parta de plataforma incluÌmos ele aqui,
-			logo apÛis a definiÁ„o dos tipos da plataforma, j·
+			que tratam da parta de plataforma inclu√≠mos ele aqui,
+			logo ap√≥is a defini√ß√£o dos tipos da plataforma, j√°
 			que ele necessita delas.
 ----------------------------------------------------------------------------*/
 
@@ -88,10 +88,12 @@ typedef FPlatformTypes::TYPE_OF_NULLPTR TYPE_OF_NULLPTR;
 #endif // TEXT
 
 #if defined(_DEBUG) && defined(PLATFORM_HAS_NATIVE_CONSOLE)
-	#define LE_DebugLog(...) FNativeConsole::Printf(ENativeConsoleTextColor::Neutral, __VA_ARGS__)
-	#define LE_DebugLogWarning(...) FNativeConsole::Printf(ENativeConsoleTextColor::Warning, __VA_ARGS__)
-	#define LE_DebugLogError(...) FNativeConsole::Printf(ENativeConsoleTextColor::Error, __VA_ARGS__)
-	#define LE_DebugLogSuccess(...) FNativeConsole::Printf(ENativeConsoleTextColor::Success, __VA_ARGS__)
+	#define Private_LE_DebugLog(Color, ...) FNativeConsole::Printf(__FILE__ ## " (line:" ## __LINE__ ## "): " ## __VA_ARGS__)
+
+	#define LE_DebugLog(...) Private_LE_DebugLog(ENativeConsoleTextColor::Neutral, __VA_ARGS__)
+	#define LE_DebugLogWarning(...) Private_LE_DebugLog(ENativeConsoleTextColor::Warning, __VA_ARGS__)
+	#define LE_DebugLogError(...) Private_LE_DebugLog(ENativeConsoleTextColor::Error, __VA_ARGS__)
+	#define LE_DebugLogSuccess(...) Private_LE_DebugLog(ENativeConsoleTextColor::Success, __VA_ARGS__)
 #else
 	#define LE_DebugLog(...)
 	#define LE_DebugLogWarning(...)
