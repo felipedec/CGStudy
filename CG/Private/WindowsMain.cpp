@@ -110,7 +110,13 @@ public:
 		Clear();
 
 		if (Indices.size() == 0 || Vertices.size() == 0)
+		{	
+			return;
+		}
+		
+		if (Indices.size() % 3 != 0)
 		{
+			LE_DebugLogWarning(TEXT("Número inválido de índices"));
 			return;
 		}
 		
