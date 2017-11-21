@@ -14,18 +14,10 @@
 #pragma once
 
 /*----------------------------------------------------------------------------
-			Module.
+			Core.
 ----------------------------------------------------------------------------*/
 
 #define CORE_API
-#define FORCEINLINE __forceinline
-#define CONSTEXPR constexpr
-
-/*----------------------------------------------------------------------------
-			Platform Macros.
-----------------------------------------------------------------------------*/
-
-#define USE_DIRECTX_MATH
 
 /*----------------------------------------------------------------------------
 			Includes.
@@ -43,6 +35,7 @@
 #include <string>
 
 #include "HAL/Platform.h"
+#include "Template/TypeTraits.h"
 #include "Macros.h"
 #include "Math/Math.h"
 

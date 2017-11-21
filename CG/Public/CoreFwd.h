@@ -18,17 +18,24 @@
 ----------------------------------------------------------------------------*/
 
 class FMath;
-struct FMatrix;
 class FScaleMatrix;
 class FTranslationMatrix;
 class FClipProjectionMatrix;
 class FPerspectiveMatrix;
 class FReversedZPerspectiveMatrix;
+struct FMatrix;
 struct FVector2;
 struct FVector;
 struct FVector4;
 struct FPlane;
 struct FQuaternion;
+union FColor32;
+
+/*----------------------------------------------------------------------------	
+			RHI.
+----------------------------------------------------------------------------*/
+
+struct FVertex;
 
 /*----------------------------------------------------------------------------
 			Misc.

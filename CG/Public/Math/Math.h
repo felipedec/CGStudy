@@ -17,6 +17,10 @@
 
 #include <cmath> // sin, cos, tan
 
+#if USE_DIRECTX_MATH
+	#include "Math/DirectXMath.h"
+#endif
+
 
 class FMath
 {

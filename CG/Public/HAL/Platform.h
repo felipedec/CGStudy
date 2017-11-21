@@ -13,15 +13,12 @@
 
 #pragma once
 
-#include "GenericPlatform/GenericPlatform.h"
-
 /*----------------------------------------------------------------------------
 			PlatformTypes.
 ----------------------------------------------------------------------------*/
 
 #if defined(PLATFORM_WINDOWS)
-	#include "Windows/Windows.h"
-	typedef FWindowsPlatformTypes FPlatformTypes;
+	#include "Windows/WindowsPlatform.h"
 #else
 	#error Platform is not defined.
 #endif
@@ -69,14 +66,8 @@ typedef FPlatformTypes::TYPE_OF_NULLPTR TYPE_OF_NULLPTR;
 ----------------------------------------------------------------------------*/
 
 #if defined(PLATFORM_WINDOWS)
-	// FNativeConsole
-	#define PLATFORM_HAS_NATIVE_CONSOLE
-	#include "Windows/WindowsNativeConsole.h"
-	typedef FWindowsNativeConsole FNativeConsole;
-#else
-	// FNativeConsole
-	#include "GenericPlatform/GenericPlatformNativeConsole.h"
-	typedef FGenericPlatformNativeConsole FNativeConsole;
+	#include "Windows/WindowsPlatformNativeConsole.h"
+	#include "Windows/WindowsPlatformTimer.h"
 #endif
 
 /*----------------------------------------------------------------------------
@@ -87,7 +78,7 @@ typedef FPlatformTypes::TYPE_OF_NULLPTR TYPE_OF_NULLPTR;
 	#define TEXT(Txt) (L##Txt)
 #endif // TEXT
 
-#if defined(_DEBUG) && defined(PLATFORM_HAS_NATIVE_CONSOLE)
+#if _DEBUG && PLATFORM_HAS_NATIVE_CONSOLE
 	#define LE_DebugLog(...) FNativeConsole::Printf(ENativeConsoleTextColor::Neutral, __VA_ARGS__)
 	#define LE_DebugLogWarning(...) FNativeConsole::Printf(ENativeConsoleTextColor::Warning, __VA_ARGS__)
 	#define LE_DebugLogError(...) FNativeConsole::Printf(ENativeConsoleTextColor::Error, __VA_ARGS__)
@@ -98,4 +89,3 @@ typedef FPlatformTypes::TYPE_OF_NULLPTR TYPE_OF_NULLPTR;
 	#define LE_DebugLogError(...)
 	#define LE_DebugLogSuccess(...)
 #endif 
-

@@ -22,9 +22,7 @@ public:
 
 	FORCEINLINE FTranslationMatrix(const FVector& Delta)
 		: FTranslationMatrix(Delta.X, Delta.Y, Delta.Z)
-	{
-
-	}
+	{}
 
 	FORCEINLINE FTranslationMatrix(const float X, const float Y, const float Z)
 		: FMatrix

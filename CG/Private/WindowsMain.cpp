@@ -6,7 +6,7 @@
 			e as vezes iguais, já os corpos de métodos
 			são implementações próprias do desenvolvedor
 			deste projeto.
-			
+
 			Saiba mais:
 			https://github.com/felipedec/LeafEngine
 ----------------------------------------------------------------------------*/
@@ -18,132 +18,160 @@
 			Estruturas temporárias.
 ----------------------------------------------------------------------------*/
 
-#include <vector>
+template <int32 Size, uint32 Alignment> struct TAlignedBytes;
 
-union FColor32
+template <int32 Size>
+struct TAlignedBytes<Size, 1>
 {
-public:
-
-	struct
-	{
-		int8 R, G, B, A;
-	};
-
-	int8 Components[4];
-
-	uint32 Int32;
-
-public:
-	
-	FORCEINLINE FColor32() = default;
-
-	FORCEINLINE FColor32(const uint32 Hex)
-	{
-		this->Int32 = Hex;
-	}
-
+	uint8 Pad[Size];
 };
 
-struct FVertex
-{
-public:
+#define IMPLEMENT_ALIGNED_STORAGE(Align) \
+	template<int32 Size> \
+	struct TAlignedBytes<Size, Align> \
+	{ \
+		struct MS_ALIGN(Align) TPadding \
+		{ \
+			uint8 Pad[Size]; \
+		} GCC_ALIGN(Align); \
+		TPadding Padding; \
+	}; \
 
-	FVector Position;
-	FVector Normal;
-	FVector2 TexCoord0;
-	FColor32 Color;
+IMPLEMENT_ALIGNED_STORAGE(16); 
+IMPLEMENT_ALIGNED_STORAGE(8);
+IMPLEMENT_ALIGNED_STORAGE(4);
+IMPLEMENT_ALIGNED_STORAGE(2);
 
-public:
-
-	FORCEINLINE FVertex(const FVector& InPosition, const FVector& InNormal, const FVector2& InTexCoord0, const FColor32& InColor) :
-		Position(InPosition),
-		Normal(InNormal),
-		TexCoord0(InTexCoord0),
-		Color(InColor)
-	{
-
-	}
-};
-
-#define FVERTEX_MEMBER_OFFSET(Member)  ((void*)offsetof(FVertex, Member))
-
-class FMesh
+template <typename TElement, uint32 NumElements, uint32 Alignment = alignof(TElement)>
+class TStaticArray
 {
 private:
 
-	GLuint VerticesBuffer = 0, IndicesBuffer = 0;
-
-	bool bCanDraw = false;
+	TAlignedBytes<sizeof(TElement), Alignment> Elements[NumElements];
 
 public:
 
-	std::vector<int16> Indices;
-	std::vector<FVertex> Vertices;
-
-public:
-
-	FORCEINLINE ~FMesh()
+	TStaticArray()
 	{
-		DeleteBuffers();
-	}
-
-public:
-
-	FORCEINLINE void DeleteBuffers()
-	{
-		if (VerticesBuffer || IndicesBuffer)
+		for (uint32 ElementIndex = 0; ElementIndex < NumElements; ++ElementIndex)
 		{
-			bCanDraw = false;
-
-			glDeleteBuffers(1, &VerticesBuffer);
-			glDeleteBuffers(1, &IndicesBuffer);
+			new(&(*this)[ElementIndex]) TElement;
 		}
 	}
-	
-	FORCEINLINE void CreateVBOs()
+
+public:
+
+	FORCEINLINE TElement& operator[](uint32 Index)
 	{
-		DeleteBuffers();
-
-		if (Indices.size() == 0 || Vertices.size() == 0)
-		{
-			return;
-		}
-
-		glGenBuffers(1, &VerticesBuffer);
-		glBindBuffer(GL_ARRAY_BUFFER, VerticesBuffer);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(FVertex) * Vertices.size(), Vertices.data(), GL_STATIC_DRAW);
-
-		glGenBuffers(1, &IndicesBuffer);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IndicesBuffer);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(int16) * Indices.size(), Indices.data(), GL_STATIC_DRAW);
-
-		bCanDraw = true;
+		check(Index < NumElements);
+		return *(TElement*)&Elements[Index];
 	}
 
-	FORCEINLINE void Draw(GLuint Program, const int32 PositionAttr, const int32 NormalAttr, const int32 ColorAttr, const int TexCoord0Attr) const
+	FORCEINLINE const TElement& operator[](uint32 Index) const
 	{
-		glBindBuffer(GL_ARRAY_BUFFER, VerticesBuffer);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IndicesBuffer);
+		check(Index < NumElements);
+		return *(const TElement*)&Elements[Index];
+	}
 
-		glVertexAttribPointer(PositionAttr, 3, GL_FLOAT, GL_FALSE, sizeof(FVertex), FVERTEX_MEMBER_OFFSET(Position));
-		glEnableVertexAttribArray(PositionAttr);
+public:
 
-		glVertexAttribPointer(NormalAttr, 3, GL_FLOAT, GL_TRUE, sizeof(FVertex), FVERTEX_MEMBER_OFFSET(Normal));
-		glEnableVertexAttribArray(NormalAttr);
-
-		glVertexAttribPointer(ColorAttr, 4, GL_UNSIGNED_BYTE, GL_FALSE, sizeof(FVertex), FVERTEX_MEMBER_OFFSET(Color));
-		glEnableVertexAttribArray(ColorAttr);
-
-		glVertexAttribPointer(TexCoord0Attr, 2, GL_FLOAT, GL_FALSE, sizeof(FVertex), FVERTEX_MEMBER_OFFSET(TexCoord0));
-		glEnableVertexAttribArray(TexCoord0Attr);
-
-		glUseProgram(Program);
-
-		glDrawElements(GL_TRIANGLES, Indices.size(), GL_UNSIGNED_SHORT, NULL);
+	FORCEINLINE int32 Num() const 
+	{ 
+		return NumElements;
 	}
 };
 
 
+#define VAO_ENABLE_VERTEX_ATTRIBUTE(AttributeName, Size, OpenGLType, bNormalized, Program) \
+{ \
+	int32 Attribute = glGetAttribLocation(Program, "In" PREPROCESSOR_TO_STRING(AttributeName)); \
+	if (Attribute >= 0) \
+	{ \
+		glEnableVertexAttribArray(Attribute); \
+		const void* Offset = ((void*)offsetof(FVertex, AttributeName)); \
+		glVertexAttribPointer(Attribute, Size, OpenGLType, bNormalized, sizeof(FVertex), Offset); \
+	} \
+} \
+
+class FStaticMesh
+{
+private:
+
+	uint32 VertexBufferObject;
+	uint32 VertexArrayObject;
+	uint32 IndexBufferObject;
+	uint16 VertexCount;
+	uint16 IndexCount;
+
+public:
+
+	FORCEINLINE ~FStaticMesh()
+	{
+		Unload();
+	}
+
+private:
+
+	FORCEINLINE void Unload()
+	{
+		if (VertexArrayObject > 0)
+		{
+			glDeleteVertexArrays(1, &VertexArrayObject);
+		}
+
+		if (VertexBufferObject > 0)
+		{
+			glDeleteBuffers(1, &VertexBufferObject);
+		}
+
+		if (IndexBufferObject > 0)
+		{
+			glDeleteBuffers(1, &IndexBufferObject);
+		}
+	}
+
+public:
+
+	FORCEINLINE static bool Load(FStaticMesh* OutStaticMesh, uint32 Program, const FVertex* Vertices, const uint16 VertexCount, const uint16* Indices, const uint16 IndexCount)
+	{
+		check((VertexCount == 0 || IndexCount == 0) || IndexCount % 3 > 0)
+
+		OutStaticMesh->IndexCount = IndexCount; 
+		OutStaticMesh->VertexCount = IndexCount;
+
+		// VertexArrayObject
+		glGenVertexArrays(1, &OutStaticMesh->VertexArrayObject);
+		glBindVertexArray(OutStaticMesh->VertexArrayObject);
+
+		// VertexBufferObject
+		glGenBuffers(1, &OutStaticMesh->VertexBufferObject);
+		glBindBuffer(GL_ARRAY_BUFFER, OutStaticMesh->VertexBufferObject);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(FVertex) * VertexCount, Vertices, GL_STATIC_DRAW);
+
+		// IndexBufferObject
+		glGenBuffers(1, &OutStaticMesh->IndexBufferObject);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, OutStaticMesh->IndexBufferObject);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint16) * IndexCount, Indices, GL_STATIC_DRAW);
+
+		// Vertex Attributes
+		VAO_ENABLE_VERTEX_ATTRIBUTE(Position, 3, GL_FLOAT, GL_FALSE, Program);
+		VAO_ENABLE_VERTEX_ATTRIBUTE(Normal, 3, GL_FLOAT, GL_TRUE, Program);
+		VAO_ENABLE_VERTEX_ATTRIBUTE(Color, 4, GL_UNSIGNED_BYTE, GL_TRUE, Program);
+		VAO_ENABLE_VERTEX_ATTRIBUTE(TexCoord0, 2, GL_FLOAT, GL_FALSE, Program);
+
+		glBindVertexArray(0);
+
+		return true;
+	}
+
+	FORCEINLINE void Draw() const
+	{
+		glBindVertexArray(VertexArrayObject);
+		glDrawElements(GL_TRIANGLES, IndexCount, GL_UNSIGNED_SHORT, 0);
+	}
+};
+
+	
 /*----------------------------------------------------------------------------
 			Globals.
 ----------------------------------------------------------------------------*/
@@ -152,7 +180,7 @@ HWND GWindowHandle;
 HDC GDeviceContextHandle;
 HGLRC GOpenGLContextHandle;
 
-FMesh ExampleMesh;
+FStaticMesh GStaticMesh;
 
 /*----------------------------------------------------------------------------
 			Forward Declarations.
@@ -164,78 +192,166 @@ LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 			MainLoop.
 ----------------------------------------------------------------------------*/
 
+#include <cstring>
+
 FORCEINLINE void MainLoop()
 {
 	bool bQuit = false;
 	MSG Message;
+	 
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
 
+	//OFSTRUCT OpenFileInfo;
 
-	GLuint VertexShader = glCreateShader(GL_VERTEX_SHADER);
+	//HFILE FileHandle = LZOpenFile(TEXT("Shader.shader"), &OpenFileInfo, OF_READ);
+
+	//LZClose(FileHandle);
+
+	uint32 VertexShader = glCreateShader(GL_VERTEX_SHADER);
 	{
-		static const char* VertexShaderSource = 
-		"																								\n\
-			#version 430																			\n\
-			layout(location = 0) uniform mat4 ModelViewPorjectionMatrix;			\n\
+		static const char* VertexShaderSource =
+			"																							\n\
+			#version 400																			\n\
+			uniform mat4 _ModelViewProjectionMatrix;										\n\
+			uniform vec4 _Time;																	\n\
 																										\n\
-			layout(location = 1) uniform vec4 InPosition;								\n\
-			layout(location = 2) uniform vec3 InNormal;									\n\
-			layout(location = 3) uniform vec2 InTexCoord0;								\n\
-			layout(location = 4) uniform vec4 InColor;									\n\
+			in vec3 InPosition;																	\n\
+			in vec3 InNormal;																		\n\
+			in vec2 InTexCoord0;																	\n\
+			in vec4 InColor;																		\n\
+																										\n\
+			struct v2f																				\n\
+			{																							\n\
+				vec4 Color;																			\n\
+			};																							\n\
+																										\n\
+			out v2f VertexInfo;																	\n\
 																										\n\
 			void main()																				\n\
 			{																							\n\
-				gl_Position = InPosition;														\n\
+				VertexInfo.Color = InColor;													\n\
+				gl_Position = vec4(InPosition, 1.0) * _ModelViewProjectionMatrix; \n\
 			}																							\n\
 		";
-		const int32 VertexShaderSourceLength = 544;
+		const int32 VertexShaderSourceLength = strlen(VertexShaderSource);
 
-		glShaderSourceARB(VertexShader, 1, &VertexShaderSource, &VertexShaderSourceLength);
-		glCompileShaderARB(VertexShader);
+		glShaderSource(VertexShader, 1, &VertexShaderSource, &VertexShaderSourceLength);
+		glCompileShader(VertexShader);
 	}
 
-	GLuint FragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+	uint32 FragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
 	{
-		const char* FragmentShaderSource = 
-		"																								\n\
-			#version 430																			\n\
+		static const char* FragmentShaderSource =
+			"																							\n\
+			#version 400																			\n\
+			uniform vec4 _Time;																	\n\
+			out vec4 OutColor;																	\n\
+			struct v2f																				\n\
+			{																							\n\
+				vec4 Color;																			\n\
+			};																							\n\
+																										\n\
+			in v2f VertexInfo;																	\n\
 			void main()																				\n\
 			{																							\n\
-				gl_FragColor = vec4(0.0, 0.4, 0.8, 1.0);									\n\
+				OutColor = VertexInfo.Color * abs(sin(_Time[0]));						\n\
 			}																							\n\
 		";
-		const int32 FragmentShaderSourceLength = 208;
+		const int32 FragmentShaderSourceLength = strlen(FragmentShaderSource);
 
-		glShaderSourceARB(FragmentShader, 1, &FragmentShaderSource, &FragmentShaderSourceLength);
-		glCompileShaderARB(FragmentShader);
+		glShaderSource(FragmentShader, 1, &FragmentShaderSource, &FragmentShaderSourceLength);
+		glCompileShader(FragmentShader);
 	}
 
-	GLuint Program = glCreateProgram();
 
-	glAttachShader(Program, VertexShader);
-	glAttachShader(Program, FragmentShader);
-
-	glLinkProgramARB(Program);
-
-	int32 bIsLinked;
-
-	glGetProgramiv(Program, GL_LINK_STATUS, &bIsLinked);
-	if (!bIsLinked)
+	uint32 Program = glCreateProgram();
 	{
-		GLchar Error[512];
-		int32 ErrorLength;
-		glGetProgramInfoLog(Program, sizeof(Error), &ErrorLength, Error);
-		LE_DebugLogError(Error);
+		glAttachShader(Program, VertexShader);
+		glAttachShader(Program, FragmentShader);
+
+		glLinkProgram(Program);
+
+		int32 bIsLinked;
+
+		glGetProgramiv(Program, GL_LINK_STATUS, &bIsLinked);
+		if (!bIsLinked)
+		{
+			CHAR* Error = new CHAR[512];
+			int32 ErrorLength;
+
+			glGetProgramInfoLog(Program, sizeof(Error), &ErrorLength, Error);
+
+			LE_DebugLogError(Error);
+
+			delete[] Error;
+			return;
+		}
 	}
 
-	int32 VertexPositionAttribute = glGetUniformLocation(Program, "InPosition");
-	int32 VertexNormalAttribute = glGetUniformLocation(Program, "InNormal");
-	int32 VertexColorAttribute = glGetUniformLocation(Program, "InColor");
-	int32 VertexTexCoord0Attribute = glGetUniformLocation(Program, "InTexCoord0");
+	// Definir objeto de exemplo
+	{
+		const static uint16 Indices[] = 
+		{ 
+			0, 1, 2,
+			2, 3, 0,
+			4, 1, 0,
+			4, 5, 1,
+			7, 5, 4,
+			7, 6, 5,
+			2, 1, 6,
+			5, 6, 1,
+			6, 7, 2,
+			2, 7, 3,
+			0, 7, 4,
+			0, 3, 7,
+		};
+		const static FVertex Vertices[] =
+		{
+			FVertex(FVector(4, 4, 4), FVector::Zero, FVector2::Zero, 0xFFFF0000),
+			FVertex(FVector(4, -4, 4), FVector::Zero, FVector2::Zero, 0xFF00FF00),
+			FVertex(FVector(-4, -4, 4), FVector::Zero, FVector2::Zero, 0xFF0000FF),
+			FVertex(FVector(-4, 4, 4), FVector::Zero, FVector2::Zero, 0xFFFFFF00),
 
-	FMatrix ModelMatrix = FQuaternion(0, 30, 0) * FTranslationMatrix(0.01f, 0.1f, 0.2f);
+			FVertex(FVector(4, 4, -4), FVector::Zero, FVector2::Zero, 0xFFFF00FF),
+			FVertex(FVector(4, -4, -4), FVector::Zero, FVector2::Zero, 0xFF00FFFF),
+			FVertex(FVector(-4, -4, -4), FVector::Zero, FVector2::Zero, 0xFFFFFFFF),
+			FVertex(FVector(-4, 4, -4), FVector::Zero, FVector2::Zero, 0xFF0F0F0F),
+		}; 
+
+		FStaticMesh::Load
+		(
+			&GStaticMesh, Program, 
+			Vertices, TExtent<decltype(Vertices)>::Value,
+			Indices, TExtent<decltype(Indices)>::Value
+		);
+	}
+	
+	int32 ModelViewProjectionMatrixLocation = glGetUniformLocation(Program, "_ModelViewProjectionMatrix");
+	int32 TimeLocation = glGetUniformLocation(Program, "_Time");
+
+	float DeltaTime = 0;
+	float Time = 0;
+	float LastTitleUpdateTime = 0;
+	FPlatformTimer Timer;
+
+	FMatrix ProjectionMatrix = FPerspectiveMatrix(FMath::Pi / 3 , 1280, 720, 1, 1000);
+
 
 	while (!bQuit)
 	{
+		Timer.Start();
+		Time += DeltaTime;
+
+		if (Time - LastTitleUpdateTime > 0.5f)
+		{
+			TCHAR Buffer[96];
+			int32 Characters = swprintf_s(Buffer, TEXT("%.4fms | %d FPS"), DeltaTime, (int)(1 / DeltaTime));
+			SetWindowText(GWindowHandle, Buffer);
+
+			LastTitleUpdateTime = Time;
+		}
+
 		if (PeekMessage(&Message, NULL, 0, 0, PM_REMOVE))
 		{
 			if (Message.message == WM_QUIT)
@@ -250,26 +366,26 @@ FORCEINLINE void MainLoop()
 		}
 		else
 		{
-			glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-			glClear(GL_COLOR_BUFFER_BIT);
 
-			ExampleMesh.Draw
-			(
-				Program, 
-				VertexPositionAttribute,
-				VertexNormalAttribute,
-				VertexColorAttribute,
-				VertexTexCoord0Attribute
-			);
+			glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+			FMatrix ModelMatrix = FTranslationMatrix(0, 0, 33) 
+										 * FQuaternion(Time * 90, 0, Time * 45)
+										 * ProjectionMatrix;
+
+			glUniformMatrix4fv(ModelViewProjectionMatrixLocation, 1, GL_TRUE, (GLfloat*)&ModelMatrix);
+			glUniform4f(TimeLocation, Time, 0, 0, 0);
+
+			glUseProgram(Program);
+
+			GStaticMesh.Draw();
 
 			SwapBuffers(GDeviceContextHandle);
-
-			Sleep(1);
 		}
+		
+		DeltaTime = Timer.Stop();
 	}
-
-	glDetachShader(Program, VertexShader);
-	glDetachShader(Program, FragmentShader);
 
 	glDeleteShader(VertexShader);
 	glDeleteShader(FragmentShader);
@@ -283,9 +399,10 @@ FORCEINLINE void MainLoop()
 
 int32 WINAPI WinMain(HINSTANCE InstanceHandle, HINSTANCE PrevInstanceHandle, LPSTR CommandLine, int CommandShow)
 {
+	const TCHAR* ClassName = TEXT("LeafEngine");
+
 	// Registrar a classe do Windows
 	{
-		const TCHAR* ClassName = TEXT("LeafEngine");
 
 		WNDCLASS WinClass;
 		ZeroMemory(&WinClass, sizeof(WinClass));
@@ -304,7 +421,6 @@ int32 WINAPI WinMain(HINSTANCE InstanceHandle, HINSTANCE PrevInstanceHandle, LPS
 
 	// Criar janela
 	{
-		const TCHAR* ClassName = TEXT("LeafEngine");
 		const TCHAR* WindowName = TEXT("GameName");
 		const DWORD Style = WS_CAPTION | WS_POPUPWINDOW | WS_VISIBLE;
 
@@ -333,33 +449,15 @@ int32 WINAPI WinMain(HINSTANCE InstanceHandle, HINSTANCE PrevInstanceHandle, LPS
 		wglMakeCurrent(GDeviceContextHandle, GOpenGLContextHandle);
 	}
 
-	// Exibir informações
-	{
-		LE_DebugLog(TEXT("%-36sVersão OpenGL:\n"), TEXT("Placa de vídeo:"));
-		LE_DebugLog("%-36s%s\n", glGetString(GL_RENDERER), glGetString(GL_VERSION));
-	}
-
 	// Iniciar Glew
 	if (glewInit() != GLEW_OK)
 	{
 		goto DestroyContextAndClose;
 	}
 
-	// Definir objeto de exemplo
-	{
-		ExampleMesh.Indices = { 0, 1, 2 };
-		ExampleMesh.Vertices =
-		{
-			FVertex(FVector(0.0f, 1.0f, 0.0f), FVector::Forward, FVector2::Zero, 0xFF00FF00),
-			FVertex(FVector(0.87f, -0.5f, 0.0f), FVector::Forward, FVector2::Zero, 0xFFFFFFFF),
-			FVertex(FVector(-0.87f, -0.5f, 0.0f), FVector::Forward, FVector2::Zero, 0x00FFFFFF),
-		};
-		ExampleMesh.CreateVBOs();
-	}
-
 	// Loop principal
 	MainLoop();
-
+	
 	// Destruir contexto OpenGL e a janela
 	DestroyContextAndClose:
 	{
@@ -390,15 +488,6 @@ LRESULT CALLBACK WndProc(HWND WinHandle, UINT Message, WPARAM WParam, LPARAM LPa
 	case WM_DESTROY:
 		return 0;
 
-	case WM_KEYDOWN:
-		switch (WParam)
-		{
-		case VK_ESCAPE:
-			PostQuitMessage(0);
-			return 0;
-		}
-		return 0;
-		
 	default:
 		return DefWindowProc(WinHandle, Message, WParam, LParam);
 	}

@@ -31,6 +31,9 @@
     <Filter Include="Public\Template">
       <UniqueIdentifier>{0f8cff53-a4e7-42a1-a7bd-bffcab832551}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Public\RHI">
+      <UniqueIdentifier>{c07efb93-297d-4ef6-aa34-ee4660cf1cc7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Private\Math\Math.cpp">
@@ -104,26 +107,35 @@
     <ClInclude Include="Public\GenericPlatform\GenericPlatformNativeConsole.h">
       <Filter>Public\GenericPlatform</Filter>
     </ClInclude>
-    <ClInclude Include="Public\Windows\Windows.h">
-      <Filter>Public\Windows</Filter>
-    </ClInclude>
     <ClInclude Include="Public\GenericPlatform\GenericPlatform.h">
       <Filter>Public\GenericPlatform</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\Windows\WindowsNativeConsole.h">
-      <Filter>Public\Windows</Filter>
     </ClInclude>
     <ClInclude Include="Public\GenericPlatform\GenericPlatformFile.h">
       <Filter>Public\GenericPlatform</Filter>
     </ClInclude>
-    <ClInclude Include="Public\Temp\Shader.h">
-      <Filter>Public\Temp</Filter>
+    <ClInclude Include="Public\Windows\WindowsPlatform.h">
+      <Filter>Public\Windows</Filter>
     </ClInclude>
-    <ClInclude Include="Public\Temp\StaticMesh.h">
-      <Filter>Public\Temp</Filter>
+    <ClInclude Include="Public\Windows\WindowsPlatformNativeConsole.h">
+      <Filter>Public\Windows</Filter>
     </ClInclude>
-    <ClInclude Include="Public\Temp\Color32.h">
-      <Filter>Public\Temp</Filter>
+    <ClInclude Include="Public\RHI\Shader.h">
+      <Filter>Public\RHI</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\RHI\StaticMesh.h">
+      <Filter>Public\RHI</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\RHI\Vertex.h">
+      <Filter>Public\RHI</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\Windows\WindowsPlatformTimer.h">
+      <Filter>Public\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\GenericPlatform\GenericPlatformTimer.h">
+      <Filter>Public\GenericPlatform</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\Template\MemoryOps.h">
+      <Filter>Public\Template</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

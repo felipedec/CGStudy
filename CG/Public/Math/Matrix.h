@@ -16,10 +16,6 @@
 #include "Core.h"
 #include "CoreFwd.h"
 
-#if defined(USE_DIRECTX_MATH)
-#include "Math/DirectXMath.h"
-#endif
-
 MS_ALIGN(16) struct FMatrix
 {
 public:
@@ -71,10 +67,10 @@ public:
 	FORCEINLINE FMatrix operator*(const FMatrix& Other) const;
 
 	/**
-	* Obtem o resultado da multiplicação dessa matríz com outra e armazena o resultado nesta matrix.
-	*
-	* @param Other Outra matríz da operação.
-	*/
+	 * Obtem o resultado da multiplicação dessa matríz com outra e armazena o resultado nesta matrix.
+	 *
+	 * @param Other Outra matríz da operação.
+	 */
 	FORCEINLINE void operator*=(const FMatrix& Other) const;
 
 	/**
@@ -102,20 +98,20 @@ public:
 	FORCEINLINE FVector4 operator*(const FVector& V) const;
 
 	/**
-	* Obtem o resultado do produto da matríz com um vetor de quatro componente.
-	*
-	* @param V Vetor.
-	* @return O resultado do produto da matríz com um vetor.
-	*/
+	 * Obtem o resultado do produto da matríz com um vetor de quatro componente.
+	 *
+	 * @param V Vetor.
+	 * @return O resultado do produto da matríz com um vetor.
+	 */
 	FORCEINLINE FVector4 operator*(const FVector4& V) const;
 
 public:
 
 	/**
-	* Obtém uma cópia da matríz transposta.
-	*
-	* @return Retorna uma cópia da matríz transposta.
-	*/
+	 * Obtém uma cópia da matríz transposta.
+	 *
+	 * @return Retorna uma cópia da matríz transposta.
+	 */
 	FORCEINLINE FMatrix GetTransposed() const;
 
 	/**

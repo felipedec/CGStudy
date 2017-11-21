@@ -37,6 +37,7 @@
     <ClInclude Include="Public\GenericPlatform\GenericPlatform.h" />
     <ClInclude Include="Public\GenericPlatform\GenericPlatformFile.h" />
     <ClInclude Include="Public\GenericPlatform\GenericPlatformNativeConsole.h" />
+    <ClInclude Include="Public\GenericPlatform\GenericPlatformTimer.h" />
     <ClInclude Include="Public\HAL\Platform.h" />
     <ClInclude Include="Public\LObject\Object.h" />
     <ClInclude Include="Public\Macros.h" />
@@ -52,13 +53,15 @@
     <ClInclude Include="Public\Math\Vector.h" />
     <ClInclude Include="Public\Math\Vector2.h" />
     <ClInclude Include="Public\Math\Vector4.h" />
+    <ClInclude Include="Public\RHI\Shader.h" />
+    <ClInclude Include="Public\RHI\StaticMesh.h" />
+    <ClInclude Include="Public\RHI\Vertex.h" />
     <ClInclude Include="Public\Sort.h" />
+    <ClInclude Include="Public\Template\MemoryOps.h" />
     <ClInclude Include="Public\Template\TypeTraits.h" />
-    <ClInclude Include="Public\Temp\Color32.h" />
-    <ClInclude Include="Public\Temp\Shader.h" />
-    <ClInclude Include="Public\Temp\StaticMesh.h" />
-    <ClInclude Include="Public\Windows\Windows.h" />
-    <ClInclude Include="Public\Windows\WindowsNativeConsole.h" />
+    <ClInclude Include="Public\Windows\WindowsPlatform.h" />
+    <ClInclude Include="Public\Windows\WindowsPlatformNativeConsole.h" />
+    <ClInclude Include="Public\Windows\WindowsPlatformTimer.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

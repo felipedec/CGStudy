@@ -14,6 +14,7 @@
 #pragma once
 
 #include "Macros.h"
+#include "HAL/Platform.h"
 
 /*----------------------------------------------------------------------------
 			Utilitário(s) para os traits.
@@ -714,6 +715,33 @@ Expose_TFormatSpecifier(double, "%f")
 Expose_TFormatSpecifier(long double, "%f")
 
 #undef Expose_TFormatSpecifier 
+
+/*----------------------------------------------------------------------------
+			TAnd.
+----------------------------------------------------------------------------*/
+
+template <typename... Types> struct TAnd;
+template <bool Lhs, typename... Rhs> struct TAndValue : TConstBoolean<TAnd<Rhs...>::Value> {};
+template <typename... Rhs> struct TAndValue<false, Rhs...> : TConstBoolean<false> {};
+template <typename Lhs, typename... Rhs> struct TAnd<Lhs, Rhs...> : TAndValue<Lhs::Value, Rhs...> {};
+template <> struct TAnd<> : TConstBoolean<true> {};
+
+/*----------------------------------------------------------------------------
+			TOr.
+----------------------------------------------------------------------------*/
+
+template <typename... Types> struct TOr;
+template <bool Lhs, typename... Rhs> struct TOrValue : TConstBoolean<TOr<Rhs...>::Value> {};
+template <typename... Rhs> struct TOrValue<true, Rhs...> : TConstBoolean<true> {};
+template <typename Lhs, typename... Rhs> struct TOr<Lhs, Rhs...> : TOrValue<Lhs::Value, Rhs...> {};
+template <> struct TOr<> : TConstBoolean<false> {};
+
+/*----------------------------------------------------------------------------
+			TNot.
+----------------------------------------------------------------------------*/
+
+template <typename Type> struct TNot : TConstBoolean<!Type::Value> {};
+
 
 /*----------------------------------------------------------------------------
 			TTypeInfo.

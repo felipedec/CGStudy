@@ -15,15 +15,20 @@
 
 #include "GenericPlatform/GenericPlatform.h"
 
+struct FWindowsPlatformTypes;
+typedef FWindowsPlatformTypes FPlatformTypes;
+
 /*----------------------------------------------------------------------------
 			Headers.
 ----------------------------------------------------------------------------*/
 
 #include <windows.h>
+#include <winbase.h>
 
 /*----------------------------------------------------------------------------
 			PlatformTypes.
 ----------------------------------------------------------------------------*/
+
 
 struct FWindowsPlatformTypes : public FGenericPlatformTypes
 {
@@ -37,36 +42,35 @@ struct FWindowsPlatformTypes : public FGenericPlatformTypes
 };
 
 
-struct FWindowsUtility
-{
-public:
+/*----------------------------------------------------------------------------
+			Macros.
+----------------------------------------------------------------------------*/
 
-	FORCEINLINE static LPWSTR GetFormattedMessageW(LPWSTR Format, ...)
-	{
-		LPWSTR BufferPtr = NULL;
-		const DWORD Flags = FORMAT_MESSAGE_FROM_STRING | FORMAT_MESSAGE_ALLOCATE_BUFFER;
+#define FORCEINLINE __forceinline
+#define ABSTRACT abstract
 
-		va_list Args = NULL;
-		va_start(Args, Format);
+#if defined(__clang__) || _MSC_VER >= 1900
+	#define CONSTEXPR constexpr
+#else
+	#define CONSTEXPR
+#endif
 
-		FormatMessageW(Flags, Format, 0, 0, (LPWSTR)&BufferPtr, 0, &Args);
+#define DLLIMPORT __declspec(dllimport)
+#define DLLEXPORT __declspec(dllexpsort)
 
-		va_end(Args);
+#define LINE_TERMINATOR TEXT("\r\n")
+#define LINE_TERMINATOR_ANSI "\r\n"
 
-		return BufferPtr;
-	}
+#define USE_DIRECTX_MATH 1
 
-	FORCEINLINE static LPSTR GetFormattedMessageA(LPSTR Format, ...)
-	{
-		LPSTR BufferPtr = NULL;
-		const DWORD Flags = FORMAT_MESSAGE_FROM_STRING | FORMAT_MESSAGE_ALLOCATE_BUFFER;
+#define PLATFORM_HAS_NATIVE_CONSOLE 1
+#define PLATFORM_DESKTOP 1
+#define PLATFORM_64BITS	_WIN64
 
-		va_list Args = NULL;
-		va_start(Args, Format);
-
-		FormatMessageA(Flags, Format, 0, 0,(LPSTR)&BufferPtr, 0, &Args);
-		va_end(Args);
-
-		return BufferPtr;
-	}
-};
+#if defined(__GNUC__)
+	#define GCC_ALIGN(n) __attribute__((aligned(n)))
+	#define MS_ALIGN(n)
+#else
+	#define GCC_ALIGN(n)
+	#define MS_ALIGN(n) __declspec(align(n)) 
+#endif // __GNUC__

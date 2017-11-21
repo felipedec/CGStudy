@@ -13,35 +13,19 @@
 
 #pragma once
 
-#include "Core.h" 
+#include "GenericPlatform/GenericPlatformTimer.h"
+#include "Windows/WindowsPlatform.h"
+#include "Core.h"
 
-union FColor32
+/*----------------------------------------------------------------------------
+			FGenericPlatformTimer.
+----------------------------------------------------------------------------*/
+
+struct FGenericPlatformTimer
 {
 public:
+	
+	FORCEINLINE virtual void Start() = 0;
 
-	struct
-	{
-		int8 R, G, B, A;
-	};
-
-	int8 Components[4];
-
-	uint32 Int32;
-
-public:
-
-	FORCEINLINE FColor32() = default;
-
-	FORCEINLINE FColor32(const uint32 InInt32) :
-		Int32(InInt32)
-	{
-
-	}
-
-	FORCEINLINE FColor32(const uint8 InR, const uint8 InG, const uint8 InB, const uint8 InA) :
-		R(InR), G(InG), B(InB), A(InA)
-	{
-
-	}
-
+	FORCEINLINE virtual float Stop() = 0;
 };

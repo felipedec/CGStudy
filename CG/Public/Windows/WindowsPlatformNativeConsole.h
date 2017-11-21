@@ -14,17 +14,10 @@
 #pragma once
 
 #include "GenericPlatform/GenericPlatformNativeConsole.h"
+#include "Windows/WindowsPlatform.h"
 
-/*----------------------------------------------------------------------------
-			Windows API Headers.
-----------------------------------------------------------------------------*/
-
-#include <stdio.h>
-#include <io.h>
-#include <fcntl.h>
-#include <windows.h>
-#include <strsafe.h>
-#include <winbase.h>
+class FWindowsNativeConsole;
+typedef FWindowsNativeConsole FNativeConsole;
 
 /*----------------------------------------------------------------------------
 			Variáveis Estátitcas.
@@ -32,8 +25,10 @@
 
 /** Tabela com os código das cores do console do Windows */
 static WORD WinColorsLookUpTable[ENativeConsoleTextColor::Count];
+
 /** Handle para o dispositivo padrão de saída */
 static HANDLE StdOutputConsoleHadle;
+
 /** Buffer utilizado para formatar armazenar as string formatadas */
 static union { TCHAR W[255]; CHAR A[512]; } Buffer;
 

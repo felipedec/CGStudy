@@ -16,9 +16,6 @@
 #include "Core.h"
 #include "CoreFwd.h"
 
-#if defined(USE_DIRECTX_MATH)
-#include "Math/DirectXMath.h"
-#endif
 
 MS_ALIGN(16) struct FQuaternion
 {
@@ -325,5 +322,5 @@ FORCEINLINE FMatrix operator*(const FMatrix& M, const FQuaternion& Quaternion)
 
 	Engine_Private::Quaternion2RotationMatrix(&RotationMatrix, Quaternion);
 
-	return RotationMatrix * M;
+	return M * RotationMatrix;
 }
