@@ -30,4 +30,8 @@ public:
 		TexCoord0(InTexCoord0),
 		Color(InColor)
 	{}
+
+	FVertex() :
+		Color(0xFFFFFFFF)
+	{}
 };

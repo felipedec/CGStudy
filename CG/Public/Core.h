@@ -20,19 +20,31 @@
 #define CORE_API
 
 /*----------------------------------------------------------------------------
-			Includes.
+			OpenGL.
+
+			TODO: Colocar em um arquivo separado.
 ----------------------------------------------------------------------------*/
 
 #define GLEW_STATIC 
-
 #pragma comment(lib, "opengl32.lib")
 #pragma comment(lib, "glu32.lib")
 #pragma comment(lib, "glew32s.lib")
 
 #include <gl/glew.h>
+#include "../ThirdParty/SOIL/SOIL.h"
+
+/*----------------------------------------------------------------------------
+			Arquivos std.
+
+			TODO: Substituir.
+----------------------------------------------------------------------------*/
 
 #include <iostream>
 #include <string>
+
+/*----------------------------------------------------------------------------
+			Includes.
+----------------------------------------------------------------------------*/
 
 #include "HAL/Platform.h"
 #include "Template/TypeTraits.h"

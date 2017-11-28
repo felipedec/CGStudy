@@ -34,6 +34,15 @@
     <Filter Include="Public\RHI">
       <UniqueIdentifier>{c07efb93-297d-4ef6-aa34-ee4660cf1cc7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{dfba1f70-926f-4e41-aff4-4a9ad96bcf5b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty">
+      <UniqueIdentifier>{19246565-a65c-4beb-bc6f-dd4db48c53c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\SOIL">
+      <UniqueIdentifier>{3d0bbd8d-455e-4914-bea7-e4a2d6ea6943}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Private\Math\Math.cpp">
@@ -41,6 +50,18 @@
     </ClCompile>
     <ClCompile Include="Private\WindowsMain.cpp">
       <Filter>Private</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\SOIL\image_DXT.c">
+      <Filter>ThirdParty\SOIL</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\SOIL\image_helper.c">
+      <Filter>ThirdParty\SOIL</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\SOIL\SOIL.c">
+      <Filter>ThirdParty\SOIL</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\SOIL\stb_image_aug.c">
+      <Filter>ThirdParty\SOIL</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -137,5 +158,34 @@
     <ClInclude Include="Public\Template\MemoryOps.h">
       <Filter>Public\Template</Filter>
     </ClInclude>
+    <ClInclude Include="ThirdParty\SOIL\image_DXT.h">
+      <Filter>ThirdParty\SOIL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SOIL\image_helper.h">
+      <Filter>ThirdParty\SOIL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SOIL\SOIL.h">
+      <Filter>ThirdParty\SOIL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SOIL\stb_image_aug.h">
+      <Filter>ThirdParty\SOIL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SOIL\stbi_DDS_aug.h">
+      <Filter>ThirdParty\SOIL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SOIL\stbi_DDS_aug_c.h">
+      <Filter>ThirdParty\SOIL</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\Temp\MeshData.generated.inl">
+      <Filter>Public\Temp</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Shaders\VertexShader.vert">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\FragmentShader.frag">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>
