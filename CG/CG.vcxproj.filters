@@ -28,9 +28,6 @@
     <Filter Include="Public\Temp">
       <UniqueIdentifier>{8df5e88e-2d3e-4446-a13e-7140a230b58e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Public\Template">
-      <UniqueIdentifier>{0f8cff53-a4e7-42a1-a7bd-bffcab832551}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Public\RHI">
       <UniqueIdentifier>{c07efb93-297d-4ef6-aa34-ee4660cf1cc7}</UniqueIdentifier>
     </Filter>
@@ -42,6 +39,12 @@
     </Filter>
     <Filter Include="ThirdParty\SOIL">
       <UniqueIdentifier>{3d0bbd8d-455e-4914-bea7-e4a2d6ea6943}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Public\Templates">
+      <UniqueIdentifier>{0f8cff53-a4e7-42a1-a7bd-bffcab832551}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Public\Containers">
+      <UniqueIdentifier>{7318dc56-2153-4d01-a8e8-ac08b42ad67b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -98,9 +101,6 @@
     <ClInclude Include="Public\Math\TranslationMatrix.h">
       <Filter>Public\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Public\Template\TypeTraits.h">
-      <Filter>Public\Template</Filter>
-    </ClInclude>
     <ClInclude Include="Public\CoreTypes.h">
       <Filter>Public</Filter>
     </ClInclude>
@@ -155,9 +155,6 @@
     <ClInclude Include="Public\GenericPlatform\GenericPlatformTimer.h">
       <Filter>Public\GenericPlatform</Filter>
     </ClInclude>
-    <ClInclude Include="Public\Template\MemoryOps.h">
-      <Filter>Public\Template</Filter>
-    </ClInclude>
     <ClInclude Include="ThirdParty\SOIL\image_DXT.h">
       <Filter>ThirdParty\SOIL</Filter>
     </ClInclude>
@@ -178,6 +175,36 @@
     </ClInclude>
     <ClInclude Include="Public\Temp\MeshData.generated.inl">
       <Filter>Public\Temp</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\Templates\IsPODType.h">
+      <Filter>Public\Templates</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\Templates\IsTriviallyCopyAssignable.h">
+      <Filter>Public\Templates</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\Templates\IsTriviallyCopyConstructible.h">
+      <Filter>Public\Templates</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\Templates\MemoryOperations.h">
+      <Filter>Public\Templates</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\Templates\TypeTraits.h">
+      <Filter>Public\Templates</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\Templates\IsTriviallyDestructible.h">
+      <Filter>Public\Templates</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\Templates\IsBitwiseConstructible.h">
+      <Filter>Public\Templates</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\Templates\IsTraits.h">
+      <Filter>Public\Templates</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\Containers\StaticArray.h">
+      <Filter>Public\Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\Templates\AlignedBytes.h">
+      <Filter>Public\Templates</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -14,6 +14,7 @@
 #pragma once
 
 #include "CoreTypes.h"
+#include "Templates/IsPODType.h"
 
 /*----------------------------------------------------------------------------
 			FQuaternion Global(s).
@@ -63,3 +64,15 @@ CORE_API const FMatrix FMatrix::Identy
 	FPlane(0, 0, 1, 0),
 	FPlane(0, 0, 0, 1)
 );
+
+/*----------------------------------------------------------------------------
+			TISPODType Specialization.
+----------------------------------------------------------------------------*/
+
+template <> struct TIsPODType<FMatrix> : TConstBoolean<true> {};
+template <> struct TIsPODType<FPlane> : TConstBoolean<true> {};
+template <> struct TIsPODType<FQuaternion> : TConstBoolean<true> {};
+template <> struct TIsPODType<FVector> : TConstBoolean<true> {};
+template <> struct TIsPODType<FVector2> : TConstBoolean<true> {};
+template <> struct TIsPODType<FVector4> : TConstBoolean<true> {};
+template <> struct TIsPODType<FColor32> : TConstBoolean<true> {};

@@ -47,7 +47,10 @@
 ----------------------------------------------------------------------------*/
 
 #include "HAL/Platform.h"
-#include "Template/TypeTraits.h"
+#include "Templates/TypeTraits.h"
+#include "Templates/IsTraits.h"
+#include "Templates/MemoryOperations.h"
+#include "Templates/AlignedBytes.h"
 #include "Macros.h"
 #include "Math/Math.h"
 

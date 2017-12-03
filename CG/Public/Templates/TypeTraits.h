@@ -65,17 +65,44 @@ template<typename T32Bits, typename T64Bits> struct TSelectPlatformType : TCondi
 			TConstBoolean, TBooleanTrue, TBooleanFalse.
 ----------------------------------------------------------------------------*/
 
-template<bool bPredicate> struct TConstBoolean : TIntegralConst<bool, bPredicate> { };
+template<bool Predicate> struct TConstBoolean : TIntegralConst<bool, Predicate> { };
 
 struct TBooleanTrue : TConstBoolean<true> { };
 struct TBooleanFalse : TConstBoolean<false> { };
 
 /*----------------------------------------------------------------------------
+			TAnd.
+----------------------------------------------------------------------------*/
+
+template <typename... Types> struct TAnd;
+template <bool Lhs, typename... Rhs> struct TAndValue : TConstBoolean<TAnd<Rhs...>::Value> {};
+template <typename... Rhs> struct TAndValue<false, Rhs...> : TConstBoolean<false> {};
+template <typename Lhs, typename... Rhs> struct TAnd<Lhs, Rhs...> : TAndValue<Lhs::Value, Rhs...> {};
+template <> struct TAnd<> : TConstBoolean<true> {};
+
+/*----------------------------------------------------------------------------
+			TOr.
+----------------------------------------------------------------------------*/
+
+template <typename... Types> struct TOr;
+template <bool Lhs, typename... Rhs> struct TOrValue : TConstBoolean<TOr<Rhs...>::Value> {};
+template <typename... Rhs> struct TOrValue<true, Rhs...> : TConstBoolean<true> {};
+template <typename Lhs, typename... Rhs> struct TOr<Lhs, Rhs...> : TOrValue<Lhs::Value, Rhs...> {};
+template <> struct TOr<> : TConstBoolean<false> {};
+
+/*----------------------------------------------------------------------------
+			TNot.
+----------------------------------------------------------------------------*/
+
+template <typename Type> struct TNot : TConstBoolean<!Type::Value> {};
+
+/*----------------------------------------------------------------------------
 			TEnableIf.
 ----------------------------------------------------------------------------*/
 
-template<bool, typename T> struct TEnableIf { };
+template<bool Predicate, typename T> struct TEnableIf { };
 template<typename T> struct TEnableIf<true, T> : Engine_Private::TType<T> { };
+template<bool Predicate> struct TEnableIf<Predicate, void> : Engine_Private::TType<void> { };
 
 /*----------------------------------------------------------------------------
 			TRemoveConst.
@@ -268,7 +295,7 @@ template<typename T, typename U> struct TMemberFunctionPointer<T U::*> : TFuncti
 			HasSignature Traits.
 ----------------------------------------------------------------------------*/
 
-#define Declare_HasSignature(TraitName, FunctionName, Signature) \
+#define DECLARE_HAS_MEMBER_FUNCTION(TraitName, FunctionName, Signature) \
 WARNING(push) \
 WARNING(disable:4067) \
 template <typename U> \
@@ -288,8 +315,8 @@ WARNING(pop) \
 ----------------------------------------------------------------------------*/
 
 struct LClass;
-Declare_HasSignature(THasStaticClass, T::StaticClass, LClass(*)())
-Declare_HasSignature(TGetEditorClass, T::CustomEditor, LClass(*)())
+DECLARE_HAS_MEMBER_FUNCTION(THasStaticClass, T::StaticClass, LClass(*)())
+DECLARE_HAS_MEMBER_FUNCTION(TGetEditorClass, T::CustomEditor, LClass(*)())
 
 /*----------------------------------------------------------------------------
 			TIsArray.
@@ -412,8 +439,7 @@ public:
 			TIsArithmetic.
 ----------------------------------------------------------------------------*/
 
-template<typename T> struct TIsArithmetic : TConstBoolean<TIsIntegral<T>::Value
-	|| TIsFloatingPoint<T>::Value> { };
+template<typename T> struct TIsArithmetic : TOr<TIsIntegral<T>, TIsFloatingPoint<T>> { };
 
 /*----------------------------------------------------------------------------
 			TIsUnsigned.
@@ -432,46 +458,37 @@ template<typename T> struct TIsUnsigned : Engine_Private::TIsUnsignedHelper<TIsA
 			TIsSigned.
 ----------------------------------------------------------------------------*/
 
-template<typename T> struct TIsSigned : TConstBoolean<!TIsUnsigned<T>::Value> { };
+template<typename T> struct TIsSigned : TNot<TIsUnsigned<T>> { };
 
 /*----------------------------------------------------------------------------
 			IsFundamental.
 ----------------------------------------------------------------------------*/
 
-template<typename T> struct TIsFundamental : TConstBoolean<TIsArithmetic<T>::Value
-	|| TIsVoid<T>::Value
-	|| TIsSame<TYPE_OF_NULLPTR, T>::Value> { };
+template<typename T> struct TIsFundamental : TOr<TIsArithmetic<T>, TIsVoid<T>, TIsSame<TYPE_OF_NULLPTR, T>> { };
 
 /*----------------------------------------------------------------------------
 			IsCompound.
 ----------------------------------------------------------------------------*/
 
-template<typename T> struct IsCompound : TConstBoolean<!TIsFundamental<T>::Value> { };
+template<typename T> struct IsCompound : TNot<TIsFundamental<T>> { };
 
 /*----------------------------------------------------------------------------
 			TIsScalar.
 ----------------------------------------------------------------------------*/
 
-template<typename T> struct TIsScalar : TConstBoolean<TIsArithmetic<T>::Value
-	|| TIsEnum<T>::Value
-	|| TIsPointer<T>::Value
-	|| TIsNullPointer<T>::Value
-	|| TIsMemberPointer<T>::Value> { };
+template<typename T> struct TIsScalar : TOr<TIsArithmetic<T>, TIsEnum<T>, TIsPointer<T>, TIsNullPointer<T>, TIsMemberPointer<T>> { };
 
 /*----------------------------------------------------------------------------
 			TIsObject.
 ----------------------------------------------------------------------------*/
 
-template<typename T> struct TIsObject : TConstBoolean<TIsScalar<T>::Value
-	|| TIsArray<T>::Value
-	|| TIsUnion<T>::Value
-	|| TIsStruct<T>::Value> { };
+template<typename T> struct TIsObject : TOr<TIsScalar<T>, TIsArray<T>, TIsUnion<T>, TIsStruct<T>> { };
 
 /*----------------------------------------------------------------------------
-			TIsNative.
+			TIsZeroConstructType.
 ----------------------------------------------------------------------------*/
 
-template<typename T> struct TIsNative : TBooleanTrue { };
+template<typename T> struct TIsZeroConstructType : TOr<TIsEnum<T>, TIsArithmetic<T>, TIsPointer<T>> {};
 
 /*----------------------------------------------------------------------------
 			TExtend.
@@ -636,11 +653,11 @@ template<typename T, typename... TRest> struct TMaxSizeof<T, TRest...>
 	: TIntegralConst<uint32, TMaxSizeof<TRest...>::Value ? sizeof(T) : TMaxSizeof<TRest...>::Value> { };
 
 /*----------------------------------------------------------------------------
-			TFriendlyNameOf.
+			TNameOf.
 ----------------------------------------------------------------------------*/
 
 template<typename T>
-struct TFriendlyNameOf
+struct TNameOf
 {
 	FORCEINLINE static const TCHAR* GetName()
 	{
@@ -648,31 +665,29 @@ struct TFriendlyNameOf
 	}
 };
 
-#define Expose_TFriendlyNameOf(Type, FriendlyName) \
+#define Expose_TNameOf(Type) \
 template<> \
-struct TFriendlyNameOf<Type> \
+struct TNameOf<Type> \
 { \
-	FORCEINLINE static const TCHAR (&GetName())[sizeof(FriendlyName)] \
+	FORCEINLINE static const TCHAR (&GetName())[sizeof(PREPROCESSOR_TO_STRING(Type))] \
 	{ \
-		static const TCHAR Specifier[sizeof(FriendlyName)] = TEXT(FriendlyName); \
+		static const TCHAR Specifier[sizeof(PREPROCESSOR_TO_STRING(Type))] = TEXT(PREPROCESSOR_TO_STRING(Type)); \
 		return Specifier; \
 	} \
 }; \
 
-Expose_TFriendlyNameOf(uint8, "Unsigned Integer (8-bits)")
-Expose_TFriendlyNameOf(uint16, "Unsigned Integer (16-bits)")
-Expose_TFriendlyNameOf(uint32, "Unsigned Integer (32-bits)")
-Expose_TFriendlyNameOf(uint64, "Unsigned Integer (64-bits)")
-Expose_TFriendlyNameOf(int8, "Integer (8-bits)")
-Expose_TFriendlyNameOf(int16, "Integer (16-bits)")
-Expose_TFriendlyNameOf(int32, "Integer (32-bits)")
-Expose_TFriendlyNameOf(int64, "Integer (64-bits)")
-Expose_TFriendlyNameOf(float, "Floating Point (32-bits)")
-Expose_TFriendlyNameOf(double, "Floating Point (64-bits)")
-Expose_TFriendlyNameOf(bool, "Boolean")
-Expose_TFriendlyNameOf(void, "Void")
-Expose_TFriendlyNameOf(char, "Character (utf-8)")
-Expose_TFriendlyNameOf(wchar_t, "Wide Character (utf-16)")
+Expose_TNameOf(uint8)
+Expose_TNameOf(uint16)
+Expose_TNameOf(uint32)
+Expose_TNameOf(uint64)
+Expose_TNameOf(int8)
+Expose_TNameOf(int16)
+Expose_TNameOf(int32)
+Expose_TNameOf(int64)
+Expose_TNameOf(float)
+Expose_TNameOf(double)
+Expose_TNameOf(bool)
+Expose_TNameOf(void)
 
 /*----------------------------------------------------------------------------
 			TFormatSpecifier.
@@ -715,126 +730,6 @@ Expose_TFormatSpecifier(double, "%f")
 Expose_TFormatSpecifier(long double, "%f")
 
 #undef Expose_TFormatSpecifier 
-
-/*----------------------------------------------------------------------------
-			TAnd.
-----------------------------------------------------------------------------*/
-
-template <typename... Types> struct TAnd;
-template <bool Lhs, typename... Rhs> struct TAndValue : TConstBoolean<TAnd<Rhs...>::Value> {};
-template <typename... Rhs> struct TAndValue<false, Rhs...> : TConstBoolean<false> {};
-template <typename Lhs, typename... Rhs> struct TAnd<Lhs, Rhs...> : TAndValue<Lhs::Value, Rhs...> {};
-template <> struct TAnd<> : TConstBoolean<true> {};
-
-/*----------------------------------------------------------------------------
-			TOr.
-----------------------------------------------------------------------------*/
-
-template <typename... Types> struct TOr;
-template <bool Lhs, typename... Rhs> struct TOrValue : TConstBoolean<TOr<Rhs...>::Value> {};
-template <typename... Rhs> struct TOrValue<true, Rhs...> : TConstBoolean<true> {};
-template <typename Lhs, typename... Rhs> struct TOr<Lhs, Rhs...> : TOrValue<Lhs::Value, Rhs...> {};
-template <> struct TOr<> : TConstBoolean<false> {};
-
-/*----------------------------------------------------------------------------
-			TNot.
-----------------------------------------------------------------------------*/
-
-template <typename Type> struct TNot : TConstBoolean<!Type::Value> {};
-
-
-/*----------------------------------------------------------------------------
-			TTypeInfo.
-----------------------------------------------------------------------------*/
-
-/** Oferece informações referente um tipo. */
-template<typename T>
-struct TTypeInfo
-{
-public:
-
-	/** Este tipo é constante? */
-	CONSTEXPR static bool bIsConst = TIsConst<T>::Value;
-
-	/** Este tipo é volatil? */
-	CONSTEXPR static bool bIsVolatile = TIsVolatile<T>::Value;
-
-	/** Este tipo é um ponteiro? */
-	CONSTEXPR static bool bIsPointer = TIsPointer<T>::Value;
-
-	/** Este tipo é um referência? */
-	CONSTEXPR static bool bIsReference = TIsReference<T>::Value;
-
-	/** Este tipo é abstrato? */
-	CONSTEXPR static bool bIsAbstract = TIsAbstract<T>::Value;
-
-	/** Este tipo é um array? */
-	CONSTEXPR static bool bIsArray = TIsArray<T>::Value;
-
-	/** Este tipo é um aritmético (integral ou ponto flutuante)? */
-	CONSTEXPR static bool bIsArithmetic = TIsArithmetic<T>::Value;
-
-	/** Este tipo é um objeto (array/struct/class/union/escalar)? */
-	CONSTEXPR static bool bIsObject = TIsObject<T>::Value;
-
-	/** Possui sinal? (caso não seja um tipo aritmético sera falso) */
-	CONSTEXPR static bool bIsSigned = TIsSigned<T>::Value;
-
-	/** Este tipo é void? */
-	CONSTEXPR static bool bIsVoid = TIsVoid<T>::Value;
-
-	/** Este tipo é um struct ou class? */
-	CONSTEXPR static bool bIsStruct = TIsStruct<T>::Value;
-	
-	/** Este tipo é um union? */
-	CONSTEXPR static bool bIsUnion = TIsUnion<T>::Value;
-
-	/** Este tipo é um enum? */
-	CONSTEXPR static bool bIsEnum = TIsEnum<T>::Value;
-
-	/** Este tipo é integral? */
-	CONSTEXPR static bool bIsIntegral = TIsIntegral<T>::Value;
-
-	/** Este tipo é um ponto flutuante? */
-	CONSTEXPR static bool bIsFloatingPoint = TIsFloatingPoint<T>::Value;
-
-	/** Este tipo é escalar (artmético/enumerador/ponteiro/nullptr)? */
-	CONSTEXPR static bool bIsScalar = TIsScalar<T>::Value;
-	
-	/** Este tipo é fundamental (artmético/void/nullptr)? */
-	CONSTEXPR static bool bIsFundamental = TIsFundamental<T>::Value;
-
-	/** Éste tipo é uma função? */
-	CONSTEXPR static bool bIsFunction = TIsFunction<T>::Value;
-
-	/** Éste tipo é uma função de uma estrutura? */
-	CONSTEXPR static bool bIsMemberFunctionPointer = TIsMemberFunctionPointer<T>::Value;
-
-public:
-
-	/** Numero de dimensões, caso não seja uma array retorna zero */
-	CONSTEXPR static uint32 Rank = TRank<T>::Value;
-	
-	/** Array como o tamanhado de cada dimensão, caso não seja uma array retorna nullptr */
-	CONSTEXPR static uint32 *DimensionSizes = TArrayDimensionSizes<T>::Dimensions;
-
-public:
-	
-	/** Caso seja um tipo aritmético retorna a formatação para a impressão desse tipo.  */
-	FORCEINLINE	static const TCHAR* GetArithmeticFormatSpecifier()
-	{
-		return TFormatSpecifier<T>::GetFormatSpecifier();
-	}
-
-	/**
-	 * Se for um tipo intrínseco da linguagem ou um objeto derivado
-	 * de LObject, retorna uma string com o nome desse tipo.
-	 */
-	FORCEINLINE	static const TCHAR* GetFriendlyName()
-	{
-		return TFriendlyNameOf<T>::GetName();
-	}
-};
 
 /*----------------------------------------------------------------------------
 			Remover definição das macros utilizadas.

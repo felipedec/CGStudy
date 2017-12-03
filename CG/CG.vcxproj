@@ -35,6 +35,7 @@
     <ClCompile Include="ThirdParty\SOIL\stb_image_aug.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Public\Containers\StaticArray.h" />
     <ClInclude Include="Public\Core.h" />
     <ClInclude Include="Public\CoreFwd.h" />
     <ClInclude Include="Public\CoreTypes.h" />
@@ -61,8 +62,15 @@
     <ClInclude Include="Public\RHI\StaticMesh.h" />
     <ClInclude Include="Public\RHI\Vertex.h" />
     <ClInclude Include="Public\Sort.h" />
-    <ClInclude Include="Public\Template\MemoryOps.h" />
-    <ClInclude Include="Public\Template\TypeTraits.h" />
+    <ClInclude Include="Public\Templates\AlignedBytes.h" />
+    <ClInclude Include="Public\Templates\IsPODType.h" />
+    <ClInclude Include="Public\Templates\IsTriviallyCopyAssignable.h" />
+    <ClInclude Include="Public\Templates\IsTriviallyCopyConstructible.h" />
+    <ClInclude Include="Public\Templates\MemoryOperations.h" />
+    <ClInclude Include="Public\Templates\IsBitwiseConstructible.h" />
+    <ClInclude Include="Public\Templates\IsTriviallyDestructible.h" />
+    <ClInclude Include="Public\Templates\IsTraits.h" />
+    <ClInclude Include="Public\Templates\TypeTraits.h" />
     <ClInclude Include="Public\Temp\MeshData.generated.inl" />
     <ClInclude Include="Public\Windows\WindowsPlatform.h" />
     <ClInclude Include="Public\Windows\WindowsPlatformNativeConsole.h" />

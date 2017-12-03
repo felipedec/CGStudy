@@ -19,7 +19,7 @@ struct FWindowsPlatformTypes;
 typedef FWindowsPlatformTypes FPlatformTypes;
 
 /*----------------------------------------------------------------------------
-			Headers.
+			Platform API Headers.
 ----------------------------------------------------------------------------*/
 
 #include <windows.h>
@@ -28,7 +28,6 @@ typedef FWindowsPlatformTypes FPlatformTypes;
 /*----------------------------------------------------------------------------
 			PlatformTypes.
 ----------------------------------------------------------------------------*/
-
 
 struct FWindowsPlatformTypes : public FGenericPlatformTypes
 {
@@ -41,7 +40,6 @@ struct FWindowsPlatformTypes : public FGenericPlatformTypes
 #endif
 };
 
-
 /*----------------------------------------------------------------------------
 			Macros.
 ----------------------------------------------------------------------------*/
@@ -53,7 +51,7 @@ struct FWindowsPlatformTypes : public FGenericPlatformTypes
 	#define CONSTEXPR constexpr
 #else
 	#define CONSTEXPR
-#endif
+#endif 
 
 #define DLLIMPORT __declspec(dllimport)
 #define DLLEXPORT __declspec(dllexpsort)
@@ -73,4 +71,5 @@ struct FWindowsPlatformTypes : public FGenericPlatformTypes
 #else
 	#define GCC_ALIGN(n)
 	#define MS_ALIGN(n) __declspec(align(n)) 
-#endif // __GNUC__
+#endif
+

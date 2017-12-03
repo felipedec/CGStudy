@@ -27,7 +27,7 @@
 #endif // __clang__
 
 #if _DEBUG
-	#define check(Condition) if (Condition) LE_DebugLogError("Error!");
+	#define check(Condition) if (Condition) LE_DebugLogError(TEXT(PREPROCESSOR_TO_STRING(Condition)));
 #else
 	#define check(Condition)
 #endif

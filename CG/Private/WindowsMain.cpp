@@ -18,70 +18,6 @@
 			Estruturas temporárias.
 ----------------------------------------------------------------------------*/
 
-template <int32 Size, uint32 Alignment> struct TAlignedBytes;
-
-template <int32 Size>
-struct TAlignedBytes<Size, 1>
-{
-	uint8 Pad[Size];
-};
-
-#define IMPLEMENT_ALIGNED_STORAGE(Align) \
-	template<int32 Size> \
-	struct TAlignedBytes<Size, Align> \
-	{ \
-		struct MS_ALIGN(Align) TPadding \
-		{ \
-			uint8 Pad[Size]; \
-		} GCC_ALIGN(Align); \
-		TPadding Padding; \
-	}; \
-
-IMPLEMENT_ALIGNED_STORAGE(16); 
-IMPLEMENT_ALIGNED_STORAGE(8);
-IMPLEMENT_ALIGNED_STORAGE(4);
-IMPLEMENT_ALIGNED_STORAGE(2);
-
-template <typename TElement, uint32 NumElements, uint32 Alignment = alignof(TElement)>
-class TStaticArray
-{
-private:
-
-	TAlignedBytes<sizeof(TElement), Alignment> Elements[NumElements];
-
-public:
-
-	TStaticArray()
-	{
-		for (uint32 ElementIndex = 0; ElementIndex < NumElements; ++ElementIndex)
-		{
-			new(&(*this)[ElementIndex]) TElement;
-		}
-	}
-
-public:
-
-	FORCEINLINE TElement& operator[](uint32 Index)
-	{
-		check(Index < NumElements);
-		return *(TElement*)&Elements[Index];
-	}
-
-	FORCEINLINE const TElement& operator[](uint32 Index) const
-	{
-		check(Index < NumElements);
-		return *(const TElement*)&Elements[Index];
-	}
-
-public:
-
-	FORCEINLINE int32 Num() const 
-	{ 
-		return NumElements;
-	}
-};
-
-
 #define VAO_ENABLE_VERTEX_ATTRIBUTE(AttributeName, Size, OpenGLType, bNormalized, Program) \
 { \
 	const int32 Attribute = glGetAttribLocation(Program, "In" PREPROCESSOR_TO_STRING(AttributeName)); \
@@ -305,7 +241,7 @@ FORCEINLINE void MainLoop()
 	uint32 VertexShader, FragmentShader, Shader;
 	LoadShader(TEXT("Shaders/VertexShader.vert"), TEXT("Shaders/FragmentShader.frag"), &VertexShader, &FragmentShader, &Shader);
 	LoadMesh(Shader);
-	const uint32 Texture = LoadTexture("Assets/sss.png");
+	const uint32 Texture = LoadTexture("Assets/Texture.png");
 
 	const int32 TextureLocation = glGetUniformLocation(Shader, "_Texture");
 	const int32 ModelViewProjectionMatrixLocation = glGetUniformLocation(Shader, "_ModelViewProjectionMatrix");
@@ -369,7 +305,7 @@ FORCEINLINE void MainLoop()
 			}
 		}
 
-		MouseDelta = MousePosition - PrevMousePositon;
+		MouseDelta = MousePosition - PrevMousePositon; 
 
 		if (GTime - LastFixedUpdateTime > 0.02f)
 		{

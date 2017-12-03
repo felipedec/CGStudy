@@ -13,4 +13,7 @@
 
 #pragma once
 
-#include "HAL/Platform.h"
+#include "Templates/IsPODType.h"
+#include "Templates/TypeTraits.h"
+
+template <typename T> struct TIsTriviallyCopyAssignable : TConstBoolean<TIsPODType<T>::Value || __has_trivial_assign(T)> {};

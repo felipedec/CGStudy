@@ -59,7 +59,7 @@ typedef FPlatformTypes::TYPE_OF_NULLPTR TYPE_OF_NULLPTR;
 			que ele necessita delas.
 ----------------------------------------------------------------------------*/
 
-#include "Template/TypeTraits.h"
+#include "Templates/TypeTraits.h"
 
 /*----------------------------------------------------------------------------
 			Plataformas.

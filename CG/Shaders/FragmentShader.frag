@@ -21,8 +21,9 @@ in v2f VertexInfo;
 
 void main()
 {
-	vec4 Color = texture2D(_Texture, VertexInfo.TexCoord0);
+	vec4 Color = vec4(1);
 	float direction = max(0, dot(VertexInfo.Normal, _LightPos - VertexInfo.WorldPosition));
 	float distance = (LIGHT_DISTANCE - distance(_LightPos, VertexInfo.WorldPosition)) / LIGHT_DISTANCE;
-	OutColor = vec4(0.2, 0, 0.49, 1) * Color + Color * max(0, distance * direction);
+	float att = max(0, distance * direction);
+	OutColor = vec4(0.2, 0, 0.49, 1) * Color + Color * log(att);
 }
