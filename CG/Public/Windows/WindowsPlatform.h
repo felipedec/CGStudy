@@ -19,7 +19,7 @@ struct FWindowsPlatformTypes;
 typedef FWindowsPlatformTypes FPlatformTypes;
 
 /*----------------------------------------------------------------------------
-			Platform API Headers.
+			Win32 API Headers.
 ----------------------------------------------------------------------------*/
 
 #include <windows.h>
@@ -63,7 +63,13 @@ struct FWindowsPlatformTypes : public FGenericPlatformTypes
 
 #define PLATFORM_HAS_NATIVE_CONSOLE 1
 #define PLATFORM_DESKTOP 1
-#define PLATFORM_64BITS	_WIN64
+#if _WIN64
+   #define PLATFORM_64BITS	1
+   #define PLATFORM_32BITS 0
+#else
+   #define PLATFORM_64BITS	0
+   #define PLATFORM_32BITS 1
+#endif // _WIN64
 
 #if defined(__GNUC__)
 	#define GCC_ALIGN(n) __attribute__((aligned(n)))

@@ -20,7 +20,6 @@
 class FMath;
 class FScaleMatrix;
 class FTranslationMatrix;
-class FClipProjectionMatrix;
 class FPerspectiveMatrix;
 class FReversedZPerspectiveMatrix;
 struct FMatrix;

@@ -2,4 +2,5 @@
 
 #pragma once
 
-#include "Core.h" 
+#include "HAL/Platform.h"
+#include "HAL/PlatformCrt.h"

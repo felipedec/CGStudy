@@ -21,7 +21,6 @@
 
 /*----------------------------------------------------------------------------
 			OpenGL.
-
 			TODO: Colocar em um arquivo separado.
 ----------------------------------------------------------------------------*/
 
@@ -34,23 +33,14 @@
 #include "../ThirdParty/SOIL/SOIL.h"
 
 /*----------------------------------------------------------------------------
-			Arquivos std.
-
-			TODO: Substituir.
-----------------------------------------------------------------------------*/
-
-#include <iostream>
-#include <string>
-
-/*----------------------------------------------------------------------------
 			Includes.
 ----------------------------------------------------------------------------*/
 
-#include "HAL/Platform.h"
+#include "HAL/PlatformIncludes.h"
 #include "Templates/TypeTraits.h"
-#include "Templates/IsTraits.h"
 #include "Templates/MemoryOperations.h"
 #include "Templates/AlignedBytes.h"
+#include "Containers/StaticArray.h"
 #include "Macros.h"
 #include "Math/Math.h"
 

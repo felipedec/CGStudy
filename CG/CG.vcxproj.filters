@@ -46,6 +46,12 @@
     <Filter Include="Public\Containers">
       <UniqueIdentifier>{7318dc56-2153-4d01-a8e8-ac08b42ad67b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Public\Misc">
+      <UniqueIdentifier>{301e234a-6a59-4fd2-82d5-0aeaac11c08e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Private\GenericPlatform">
+      <UniqueIdentifier>{6a612d36-317e-4dee-9fb4-3047f11f9e7c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Private\Math\Math.cpp">
@@ -66,6 +72,9 @@
     <ClCompile Include="ThirdParty\SOIL\stb_image_aug.c">
       <Filter>ThirdParty\SOIL</Filter>
     </ClCompile>
+    <ClCompile Include="Private\GenericPlatform\GenericPlatformTime.cpp">
+      <Filter>Private\GenericPlatform</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Public\Math\Vector.h">
@@ -75,9 +84,6 @@
       <Filter>Public\Math</Filter>
     </ClInclude>
     <ClInclude Include="Public\Math\Vector4.h">
-      <Filter>Public\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\Math\ClipProjectionMatrix.h">
       <Filter>Public\Math</Filter>
     </ClInclude>
     <ClInclude Include="Public\Math\DirectXMath.h">
@@ -107,9 +113,6 @@
     <ClInclude Include="Public\Macros.h">
       <Filter>Public</Filter>
     </ClInclude>
-    <ClInclude Include="Public\Sort.h">
-      <Filter>Public</Filter>
-    </ClInclude>
     <ClInclude Include="Public\Core.h">
       <Filter>Public</Filter>
     </ClInclude>
@@ -125,9 +128,6 @@
     <ClInclude Include="Public\HAL\Platform.h">
       <Filter>Public\HAL</Filter>
     </ClInclude>
-    <ClInclude Include="Public\GenericPlatform\GenericPlatformNativeConsole.h">
-      <Filter>Public\GenericPlatform</Filter>
-    </ClInclude>
     <ClInclude Include="Public\GenericPlatform\GenericPlatform.h">
       <Filter>Public\GenericPlatform</Filter>
     </ClInclude>
@@ -135,9 +135,6 @@
       <Filter>Public\GenericPlatform</Filter>
     </ClInclude>
     <ClInclude Include="Public\Windows\WindowsPlatform.h">
-      <Filter>Public\Windows</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\Windows\WindowsPlatformNativeConsole.h">
       <Filter>Public\Windows</Filter>
     </ClInclude>
     <ClInclude Include="Public\RHI\Shader.h">
@@ -148,12 +145,6 @@
     </ClInclude>
     <ClInclude Include="Public\RHI\Vertex.h">
       <Filter>Public\RHI</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\Windows\WindowsPlatformTimer.h">
-      <Filter>Public\Windows</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\GenericPlatform\GenericPlatformTimer.h">
-      <Filter>Public\GenericPlatform</Filter>
     </ClInclude>
     <ClInclude Include="ThirdParty\SOIL\image_DXT.h">
       <Filter>ThirdParty\SOIL</Filter>
@@ -176,28 +167,10 @@
     <ClInclude Include="Public\Temp\MeshData.generated.inl">
       <Filter>Public\Temp</Filter>
     </ClInclude>
-    <ClInclude Include="Public\Templates\IsPODType.h">
-      <Filter>Public\Templates</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\Templates\IsTriviallyCopyAssignable.h">
-      <Filter>Public\Templates</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\Templates\IsTriviallyCopyConstructible.h">
-      <Filter>Public\Templates</Filter>
-    </ClInclude>
     <ClInclude Include="Public\Templates\MemoryOperations.h">
       <Filter>Public\Templates</Filter>
     </ClInclude>
-    <ClInclude Include="Public\Templates\TypeTraits.h">
-      <Filter>Public\Templates</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\Templates\IsTriviallyDestructible.h">
-      <Filter>Public\Templates</Filter>
-    </ClInclude>
     <ClInclude Include="Public\Templates\IsBitwiseConstructible.h">
-      <Filter>Public\Templates</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\Templates\IsTraits.h">
       <Filter>Public\Templates</Filter>
     </ClInclude>
     <ClInclude Include="Public\Containers\StaticArray.h">
@@ -205,6 +178,33 @@
     </ClInclude>
     <ClInclude Include="Public\Templates\AlignedBytes.h">
       <Filter>Public\Templates</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\Math\Color32.h">
+      <Filter>Public\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\HAL\PlatformCrt.h">
+      <Filter>Public\HAL</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\HAL\PlatformIncludes.h">
+      <Filter>Public\HAL</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\Windows\WindowsPlatformConsoleWindow.h">
+      <Filter>Public\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\GenericPlatform\GenericPlatformConsoleWindow.h">
+      <Filter>Public\GenericPlatform</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\Templates\TypeTraits.h">
+      <Filter>Public\Templates</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\Misc\EnumClassFlags.h">
+      <Filter>Public\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\Windows\WindowsPlatformTime.h">
+      <Filter>Public\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\GenericPlatform\GenericPlatformTime.h">
+      <Filter>Public\GenericPlatform</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

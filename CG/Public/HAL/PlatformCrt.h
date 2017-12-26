@@ -2,4 +2,6 @@
 
 #pragma once
 
-#include "Core.h" 
+#include <new>
+#include <math.h>
+#include <stdio.h>

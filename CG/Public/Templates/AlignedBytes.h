@@ -1,15 +1,4 @@
-/*----------------------------------------------------------------------------
-			Este código pertence a um projeto pessoal,
-			baseado no código aberto da Unreal Engine,
-			com o intuito de aprendizado. Apenas as
-			estrutura básica das classes são semelhantes
-			e as vezes iguais, já os corpos de métodos
-			são implementações próprias do desenvolvedor
-			deste projeto.
-
-			Saiba mais:
-			https://github.com/felipedec/LeafEngine
-----------------------------------------------------------------------------*/
+// Código baseado no código aberto da Unreal Engine
 
 #pragma once
 
@@ -27,11 +16,11 @@ struct TAlignedBytes<Size, 1>
 	template<int32 Size> \
 	struct TAlignedBytes<Size, Align> \
 	{ \
-		struct MS_ALIGN(Align) TPadding \
+		struct MS_ALIGN(Align) FPadding \
 		{ \
 			uint8 Pad[Size]; \
 		} GCC_ALIGN(Align); \
-		TPadding Padding; \
+		FPadding Padding; \
 	}; \
 
 IMPLEMENT_ALIGNED_STORAGE(16);

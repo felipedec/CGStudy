@@ -6,7 +6,6 @@
 			e as vezes iguais, já os corpos de métodos
 			são implementações próprias do desenvolvedor
 			deste projeto.
-
 			Saiba mais:
 			https://github.com/felipedec/LeafEngine
 ----------------------------------------------------------------------------*/
@@ -14,20 +13,12 @@
 #pragma once
 
 #include "Templates/TypeTraits.h"
-#include "Templates/IsTriviallyCopyConstructible.h"
 
 template <typename T, typename Arg>
 struct TIsBitwiseConstructible : TConstBoolean<false>
 {
-	static_assert(
-		!TIsReference<T>::Value &&
-		!TIsReference<Arg>::Value,
-		"TIsBitwiseConstructible is not designed to accept reference types");
-
-	static_assert(
-		TIsSame<T, REMOVE_CV(T)>::Value &&
-		TIsSame<Arg, REMOVE_CV(Arg)>::Value,
-		"TIsBitwiseConstructible is not designed to accept qualified types");
+	static_assert(!IsReference<T> && !IsReference<Arg>, "TIsBitwiseConstructible is not designed to accept reference types");
+	static_assert(IsSame<T, TRemoveCVType<T>> && IsSame<Arg, TRemoveCVType<Arg>>, "TIsBitwiseConstructible is not designed to accept qualified types");
 };
 
 /*----------------------------------------------------------------------------

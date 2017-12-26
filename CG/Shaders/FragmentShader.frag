@@ -1,6 +1,6 @@
 #version 400
 
-#define LIGHT_DISTANCE 10
+#define LIGHT_DISTANCE 30
 
 uniform vec4 _Time;
 uniform sampler2D _Texture;

@@ -11,9 +11,7 @@
 			https://github.com/felipedec/LeafEngine
 ----------------------------------------------------------------------------*/
 
-#pragma once
+#include "GenericPlatform/GenericPlatformTime.h"
 
-#include "Templates/IsPODType.h"
-#include "Templates/TypeTraits.h"
-
-template <typename T> struct TIsTriviallyCopyAssignable : TConstBoolean<TIsPODType<T>::Value || __has_trivial_assign(T)> {};
+double FGenericPlatformTime::SecondsPerCycle = 0.0;
+double FGenericPlatformTime::SecondsPerCycle64 = 0.0; 

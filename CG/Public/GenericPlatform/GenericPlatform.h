@@ -16,7 +16,6 @@
 /*----------------------------------------------------------------------------
 			Traits usado para automaticamente selecionar o tipo correto 
 			dependendo do tamanho do barramento da plataforma.
-
 			Nota:
 			Já Existe um trait específico para isso em Templates/TypeTraits.h,
 			porém por motivos da ordem da inclusão dos arquivos é necessário
@@ -87,4 +86,3 @@ public:
 	typedef int32 TYPE_OF_NULL;
 	typedef decltype(nullptr) TYPE_OF_NULLPTR;
 };
-
